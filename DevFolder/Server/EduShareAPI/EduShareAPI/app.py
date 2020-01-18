@@ -57,7 +57,7 @@ def login(username, password):
     if exists(username, password):
         return jsonify(getUser(username))
 
-@app.route("/edushare/api/v1.0/register/<username>/<password>/<email>", methods=['GET', 'POST'])
+@app.route('/edushare/api/v1.0/register/<username>/<password>/<email>', methods=['GET', 'POST'])
 def register(username, password, email):
     user_ = {
         'id': users[-1]['id'] + 1,

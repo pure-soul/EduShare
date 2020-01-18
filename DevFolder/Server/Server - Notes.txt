@@ -1,3 +1,13 @@
 This environment contains all files related to the Service developed for EduShare.
 
 Friday, November 29, 2019 19:00 - Created edu-env (python virtual env for edushare) using Visual Studio 2017.
+
+Saturday, January 18, 2020 19:47 - Server now provides access to Login, Sign-Up and Search ports. All ports respond in JSON; formatted as follows:
+
+Login (/edushare/api/v1.0/<username>/<password>) - if successful (user exists and correct credentials used) returns a JSON with user credentials (id, name, email and password). If unsuccessful, it returns a json with error: not found.
+
+Sign-Up (/edushare/api/v1.0/register/<username>/<password>/<email>) - if successful (no security integrity protocols yet implemented for this procedure) returns a JSON with user credentials (id, name, email and password). If unsuccessful, it returns a json with error: not found.
+
+Local Search (/edushare/api/v1.0/search/<search term>) - returns a JSON containing files (items) with tags that match search term. If there are no matching files, it returns JSON error not found.
+
+API Search (/edushare/api/v1.0/apisearch/<search>) - returns a JSON the first page with a collection of matching items from Google Scholar, Mayan-EDMs, Open KM and Wikipedia (so far). It also contains links to previous and next page. All link items have useful information like Author, site published, article type, etc.)
