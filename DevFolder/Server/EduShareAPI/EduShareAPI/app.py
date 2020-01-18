@@ -30,9 +30,9 @@ def get_items(search):
 
 @app.route('/edushare/api/v1.0/apisearch/<search>', methods = ['GET'])
 def get_items_api(search):
-    # search_url = api['search'] + search
+    #search_url = api['search'] + search
     search_url = 'https://www.googleapis.com/customsearch/v1?key=AIzaSyBpvYniltDN972kSlE7tOrdmJsqrjLS3GU&cx=015449310451191663041:twljm0b8cev&q=' + search
-    # return redirect(search_url, code=302)
+    return redirect(search_url, code=302)
 
     #2 if not request.json:
     #2     abort(400)
@@ -47,9 +47,9 @@ def get_items_api(search):
     #3 search_url = requests.get('https://www.googleapis.com/customsearch/v1?key=AIzaSyBpvYniltDN972kSlE7tOrdmJsqrjLS3GU&cx=015449310451191663041:twljm0b8cev&q=' + search)
     #3 return search_url['items']
 
-    response = urllib.request.urlretrieve(search_url)
-    data = json.loads(response)
-    return data['items']
+    #4 response = urllib.request.urlretrieve(search_url)
+    #4 data = json.loads(response)
+    #4 return data['items']
 
 
 @app.route('/edushare/api/v1.0/<username>/<password>', methods = ['GET','POST'])
