@@ -2,7 +2,7 @@ from flask import Flask, jsonify, abort, make_response, render_template, redirec
 from content import items, users, api
 import html
 import urllib, json
-import requests
+#import requests
 
 app = Flask(__name__, template_folder='Forms')
 
