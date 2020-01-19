@@ -1,11 +1,10 @@
 from flask import Flask, jsonify, abort, make_response, render_template, redirect, request
 from content import items, users, api
+import db_content
 import html
-import urllib, json
 #import requests
 
 app = Flask(__name__, template_folder='Forms')
-
 
 # Make the WSGI interface available at the top level so wfastcgi can get it.
 wsgi_app = app.wsgi_app
@@ -34,18 +33,8 @@ def get_items_api(search):
     search_url = 'https://www.googleapis.com/customsearch/v1?key=AIzaSyBpvYniltDN972kSlE7tOrdmJsqrjLS3GU&cx=015449310451191663041:twljm0b8cev&q=' + search
     return redirect(search_url, code=302)
 
-    #2 if not request.json:
-    #2     abort(400)
-    #2 for reques in request.json:
-    #2     results = []
-    #2     result = {
-    #2         reques['items']
-    #2     }
-    #2     results.append(result)
-    #2 return jsonify(results)
-
-    #3 search_url = requests.get('https://www.googleapis.com/customsearch/v1?key=AIzaSyBpvYniltDN972kSlE7tOrdmJsqrjLS3GU&cx=015449310451191663041:twljm0b8cev&q=' + search)
-    #3 return search_url['items']
+    #3 search = requests.get('https://www.googleapis.com/customsearch/v1?key=AIzaSyBpvYniltDN972kSlE7tOrdmJsqrjLS3GU&cx=015449310451191663041:twljm0b8cev&q=' + search)
+    #3 return search['items']
 
     #4 response = urllib.request.urlretrieve(search_url)
     #4 data = json.loads(response)
