@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">Version2</string>
+    <string name="login">Login</string>
+    <string name="not_registered">Not Registered</string>
+    <string name="register">Register</string>
+
+    <string name="view_chat">View Chat</string>
+    <string name="view__favourites">View Favorites</string>
+    <string name="view_download">View Download</string>
+    <string name="view_bookmark">View Bookmark</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="geography">Geography</string>
+    <string name="favourites">Favorites</string>
+    <string name="chat">Chat</string>
+    <string name="search">Search</string>
+    <string name="profile">Profile</string>
+    <string name="web">Web</string>
+    <string name="home">Home</string>
+    <string name="title_activity_chat_section">ChatSection</string>
+    <string name="user_name">User Name</string>
+    <string name="email">EMAIL</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="already_registered">Already Registered</string>
+    <string name="first_name">First Name:</string>
+    <string name="last_name">Last Name:</string>
+    <string name="email_address">Email Address:</string>
+    <string name="student">Student</string>
+    <string name="tutor">Tutor</string>
+
+</resources>
