@@ -1,1 +1,0 @@
-This environment contains all files related to the Web platform developed for EduShare.
