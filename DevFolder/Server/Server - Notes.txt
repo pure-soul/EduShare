@@ -1,4 +1,5 @@
-This environment contains all files related to the Service developed for EduShare.
+This environment contains all files related to the Service developed for EduShare, excepting virtual environment. 
+Python environment has installed flask, socket.io, requests, bocadillo, 
 
 Friday, November 29, 2019 19:00 - Created edu-env (python virtual env for edushare) using Visual Studio 2017.
 
@@ -11,3 +12,14 @@ Sign-Up (/edushare/api/v1.0/register/<username>/<password>/<email>) - if success
 Local Search (/edushare/api/v1.0/search/<search term>) - returns a JSON containing files (items) with tags that match search term. If there are no matching files, it returns JSON error not found.
 
 API Search (/edushare/api/v1.0/apisearch/<search>) - returns a JSON the first page with a collection of matching items from Google Scholar, Mayan-EDMs, Open KM and Wikipedia (so far). It also contains links to previous and next page. All link items have useful information like Author, site published, article type, etc.)
+
+Sunday, January 19, 2020 - Started working on chat. 
+
+There are currently two different chat files with two slightly different approaches:
+
+chat.py - attempting to implement just socket.io according to documentation provided by 		developers @ https://python-socketio.readthedocs.io/en/latest/server.html#
+
+chatapp.py - attempting to implement socket.io using Bocadillo according to 
+		@ https://bocadilloproject.github.io/how-to/socketio.html#planning
+
+Sunday, January 19, 2020 - Bocadillo is now UNMAINTAINED. Users are recommended to migrate to a supported alternative, such as Starlette or FastAPI. chatapp.py will not execute using bocadillo.
