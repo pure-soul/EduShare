@@ -1,0 +1,43 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Chat | Bocadillo + socket.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="/static/styles.css" />
+  </head>
+  <body>
+    <ul id="messages"></ul>
+    <form id="form" action="">
+      <input id="message" autocomplete="off" /><button>Send</button>
+    </form>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io({ path: "/sio/socket.io" });
+    
+        socket.on("connect", () => {
+          console.log("Connected!");
+        });
+        socket.on("disconnect", () => {
+          console.log("Lost connection to the server.");
+        });
+        const formEl = document.getElementById("form");
+        const messageEl = document.getElementById("message");
+        const messageList = document.getElementById("messages");
+
+        formEl.onsubmit = event => {
+        event.preventDefault();
+        socket.emit("message", messageEl.value);
+        messageEl.value = "";
+        return false;
+        };
+
+        socket.on("response", message => {
+        console.log("response:", message);
+        const li = document.createElement("li");
+        li.innerText = message;
+        messageList.appendChild(li);
+        });
+      </script>
+  </body>
+</html>
