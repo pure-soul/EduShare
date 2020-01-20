@@ -1,6 +1,5 @@
 import socketio
 from bocadillo import App, configure, Templates, static
-#replace bodacillo (Starlette, FastAPI)
 
 app = App()
 configure(app)
