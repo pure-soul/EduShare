@@ -63,7 +63,7 @@ async def send_message(sid, data, reciever_sid):
 #Event functions
 @sio.event
 def begin_chat(sid):
-    raise ConnectionRefusedError('authentication failed')
+    #raise ConnectionRefusedError('authentication failed')
     sio.enter_room(sid, 'chat_users')
 
 @sio.event
