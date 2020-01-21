@@ -41,6 +41,34 @@ async def handle_message(sid, data: str):
     # See: https://python-socketio.readthedocs.io/en/latest/server.html#emitting-events
     await sio.emit("response", data)
 
+# Event Handler for "send_request" event
+@sio.on("send_request")
+async def send_request(sid, reciever_sid):
+    sio.emit("new_request", {"sender": sid}, room=reciever_sid)
+    return "OK", 123
+
+# Event Handler for "request_response" event
+@sio.on("request_response")
+async def process_request(sid, response: bool, requestor_sid):
+    if response == True:
+        sio.emit("request_accepted", {"acceptor": sid}, room=requestor_sid)
+        return "OK", 123
+
+# Event Handler for "send_to" event
+@sio.on("send_to")
+async def send_message(sid, data, reciever_sid):
+    sio.emit("new_message", {"data": data, "sender": sid}, room=reciever_sid)
+    return "OK", 123
+
+#Event functions
+@sio.event
+def begin_chat(sid):
+    raise ConnectionRefusedError('authentication failed')
+    sio.enter_room(sid, 'chat_users')
+
+@sio.event
+def exit_chat(sid):
+    sio.leave_room(sid, 'chat_users')
 
 if __name__ == "__main__":
     app.run()
