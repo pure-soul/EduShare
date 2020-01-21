@@ -30,6 +30,12 @@ def index():
         thread = sio.start_background_task(background_thread)
     return render_template('index.html')
 
+@app.route('/chat')
+def chat():
+    global thread
+    if thread is None:
+        thread = sio.start_background_task(background_thread)
+    return render_template('chat.html')
 
 @sio.event
 def my_event(sid, message):
@@ -81,6 +87,15 @@ def connect(sid, environ):
 @sio.event
 def disconnect(sid):
     print('Client disconnected')
+
+# Event handler for the "message" event.
+# See: https://python-socketio.readthedocs.io/en/latest/server.html#defining-event-handlers
+@sio.on("message")
+def handle_message(sid, data: str):
+    print("message:", data)
+    # Broadcast the received message to all connected clients.
+    # See: https://python-socketio.readthedocs.io/en/latest/server.html#emitting-events
+    sio.emit("response", {'data': data, 'count': 0}, room='chat')
 
 
 if __name__ == '__main__':
