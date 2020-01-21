@@ -30,8 +30,15 @@ def index():
         thread = sio.start_background_task(background_thread)
     return render_template('index.html')
 
-@app.route('/chat')
-def chat():
+@app.route('/chat/henry')
+def chat1():
+    global thread
+    if thread is None:
+        thread = sio.start_background_task(background_thread)
+    return render_template('chat.html')
+
+@app.route('/chat/soul')
+def chat2():
     global thread
     if thread is None:
         thread = sio.start_background_task(background_thread)
@@ -95,7 +102,7 @@ def handle_message(sid, data: str):
     print("message:", data)
     # Broadcast the received message to all connected clients.
     # See: https://python-socketio.readthedocs.io/en/latest/server.html#emitting-events
-    sio.emit("response", {'data': data, 'count': 0}, room='chat')
+    sio.emit("response", data)
 
 
 if __name__ == '__main__':
