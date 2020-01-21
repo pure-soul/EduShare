@@ -14,7 +14,8 @@ wsgi_app = app.wsgi_app
 @app.route('/')
 def hello():
     """Renders a sample page."""
-    return "Welcome to Edushare!"
+    return render_template('home.html')
+    #return "Welcome to Edushare!"
 
 @app.route('/edushare/api/v1.0/search', methods = ['GET','POST'])
 def search():
