@@ -1,1 +1,4 @@
 This environment contains all files related to the DBMS platform developed for EduShare.
+
+Visio Variant \EduShareDBMS
+VSCode Variant \env\app.py
