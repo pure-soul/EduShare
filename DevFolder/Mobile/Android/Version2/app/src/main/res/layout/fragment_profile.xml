@@ -40,11 +40,11 @@
                 android:text="full email"/>
 
             <TextView
-                android:id="@+id/type"
+                android:id="@+id/category"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="15sp"
-                android:text="type"/>
+                android:text="category"/>
 
 
         </LinearLayout>

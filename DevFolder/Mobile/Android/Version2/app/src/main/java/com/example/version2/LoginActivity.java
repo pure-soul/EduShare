@@ -56,13 +56,13 @@ public class LoginActivity extends AppCompatActivity {
         mSubmitLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = mEmail.getText().toString();
+                String name = mEmail.getText().toString();
                 String password = mPassword.getText().toString();
 
                 // Check for empty data in the form
-                if (email.trim().length() > 0 && password.trim().length() > 0) {
+                if (name.trim().length() > 0 && password.trim().length() > 0) {
                     // login user
-                    checkLogin(email, password);
+                    checkLogin(name, password);
                 } else {
                     // Prompt user to enter credentials
                     Toast.makeText(getApplicationContext(),
@@ -73,15 +73,14 @@ public class LoginActivity extends AppCompatActivity {
         });
 
 
-
     }
 
-    private void checkLogin(final String email, final String password) {
+    private void checkLogin(final String name, final String password) {
         // Tag used to cancel the request
         String tag_string_req = "req_login";
 
         //to check
-        String url = Config_URL.URL_LOGIN + email +"/"+password;
+        String url = Config_URL.URL_LOGIN + name +"/"+password;
         StringRequest stringRequest = new StringRequest(Request.Method.POST,
                 url, new Response.Listener<String>() {
 
@@ -101,8 +100,8 @@ public class LoginActivity extends AppCompatActivity {
                         // Create login session
 
                         //change to email
-                        Profile.setName((String) jObj.get("name"));
-                        Profile.setEmail(email);
+                        Profile.setName(name);
+                        Profile.setEmail((String) jObj.get("email"));
                         session.setLogin(true);
                         // Launch main activity
                         Intent intent = new Intent(LoginActivity.this,
@@ -137,7 +136,7 @@ public class LoginActivity extends AppCompatActivity {
             protected Map<String, String> getParams() {
                 // Posting parameters to login url
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("name", email);
+                params.put("name", name);
                 params.put("password", password);
 
                 return params;

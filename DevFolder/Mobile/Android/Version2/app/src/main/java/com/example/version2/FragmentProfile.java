@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment;
 
 public class FragmentProfile extends Fragment {
 
-    TextView mName, mEmail, mlogOut, mType;
+    TextView mName, mEmail, mlogOut, mCategory;
     Layout mView_chat, mView_favorites, mView_download, mView_bookmark;
     SessionManager sessionManager;
 
@@ -25,7 +25,7 @@ public class FragmentProfile extends Fragment {
 
         mName = v.findViewById(R.id.name);
         mEmail = v.findViewById(R.id.email);
-        mType = v.findViewById(R.id.type);
+        mCategory = v.findViewById(R.id.category);
 
 /*        mView_chat = (Layout) v.findViewById(R.id.view_chat);
         ((View) mView_chat).setOnClickListener(new View.OnClickListener() {
@@ -53,7 +53,7 @@ public class FragmentProfile extends Fragment {
         // Displaying the user details on the screen
         mName.setText(Profile.getName());
         mEmail.setText(Profile.getEmail());
-        mType.setText(Profile.getType());
+        mCategory.setText(Profile.getType());
 
         return v ;
     }

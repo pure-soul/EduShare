@@ -28,4 +28,20 @@
     <string name="student">Student</string>
     <string name="tutor">Tutor</string>
 
+
+    <string-array name="categories">
+        <item>Biology</item>
+        <item>Geography</item>
+        <item>Computer Science</item>
+        <item>Psychology</item>
+        <item>Economy</item>
+        <item>Sociology</item>
+    </string-array>
+
+    <string-array name="preferences">
+        <item>video call</item>
+        <item>message</item>
+        <item>voice call</item>
+    </string-array>
+
 </resources>
