@@ -1,5 +1,9 @@
 from flask import Flask, jsonify, abort, make_response, render_template, redirect
 import html
+
+import socket
+#import fcntl
+#import struct
 #import requests
 
 items = [
@@ -70,6 +74,13 @@ def hello():
     return render_template('home.html')
     #return "Welcome to Edushare!"
 
+@app.route('/getip')
+def get_ip():
+    #get_ip_address('eth0')
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.connect(('0.0.0.0', 80))
+    return s.getsockname()[0]
+
 @app.route('/edushare/api/v1.0/search', methods = ['GET','POST'])
 def search():
     """Renders a search page (as templated from https://codepen.io/adobewordpress/pen/gbewLV)"""
@@ -97,19 +108,25 @@ def get_items_api(search):
 
 @app.route('/edushare/api/v1.0/<username>/<password>', methods = ['GET','POST'])
 def login(username, password):
-    if exists(username, password):
-        return jsonify(getUser(username))
+    login_url = '0.0.0.0:8008/~/' + username + '/' + password
+    return redirect(login_url, code=302)
 
-@app.route('/edushare/api/v1.0/register/<username>/<password>/<email>', methods=['GET', 'POST'])
-def register(username, password, email):
-    user_ = {
-        'id': users[-1]['id'] + 1,
-        'name': username,
-        'email': email,
-        'password': password
-    }
-    users.append(user_)
-    return jsonify(user_)
+    # if exists(username, password):
+    #     return jsonify(getUser(username))
+
+@app.route('/edushare/api/v1.0/register/<username>/<password>/<email>/<role>/<review>', methods=['GET', 'POST'])
+def register(username, password, email, role, review):
+    register_url = '0.0.0.0:8008/~/' + username + '/' + password + '/' + email + '/' + role+ '/' + review
+    return redirect(register_url, code=302)
+
+    # user_ = {
+    #     'id': users[-1]['id'] + 1,
+    #     'name': username,
+    #     'email': email,
+    #     'password': password
+    # }
+    # users.append(user_)
+    # return jsonify(user_)
 
 #Supporting Functions
 
@@ -130,6 +147,10 @@ def getUser(string):
     if len(user) == 0:
         abort(404)
     return user
+
+def get_ip_address(ifname):
+    s = socket.socket(socket.IPPORT_USERRESERVED, socket.SOCK_DGRAM)
+    return socket.inet_ntoa(fcntl.ioctl(s.fileno(), 0x8915, struct.pack('256s', ifname[:15]))[20:24])
 
 #Error Handlers
 

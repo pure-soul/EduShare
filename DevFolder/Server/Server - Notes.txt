@@ -23,3 +23,17 @@ chatapp.py - attempting to implement socket.io using Bocadillo according to
 		@ https://bocadilloproject.github.io/how-to/socketio.html#planning
 
 Sunday, January 19, 2020 - Bocadillo is now UNMAINTAINED. Users are recommended to migrate to a supported alternative, such as Starlette or FastAPI. chatapp.py will not execute using bocadillo.
+
+Thursday, January 19, 2020 - Started pushing python files to docker for easier remote access. Keep the steps in mind for updating docker repositories:
+
+docker build -t <image name> .
+docker login
+docker tag <image name> dmss/edushare:<tag>
+docker push dmss/edushare:<tag>
+
+Running image:
+docker run [-p <implemented port>:<replacement port>] <image name>
+
+Current image names:
+edusharemain
+edusharedb
