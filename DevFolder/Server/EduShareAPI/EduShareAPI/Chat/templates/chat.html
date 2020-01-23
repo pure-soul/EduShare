@@ -17,7 +17,9 @@
     <form id="form" action="">
       <input id="message" autocomplete="off" /><button>Send</button>
     </form>
-    <script src="/socket.io/socket.io.js"></script>
+    <!-- <script src="/socket.io/socket.io.js"></script> -->
+    <script type="text/javascript" src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.slim.js"></script>
     <script>
       /*
         Remake of the socket.io chat tutorial.
@@ -30,7 +32,8 @@
       made available by the Bocadillo application.
       See: https://socket.io/docs/client-api/#With-custom-path
       */
-      const socket = io({ path: "/sio/socket.io" });
+      // const socket = io({ path: "/sio/socket.io" });
+      const socket = io.connect();    
 
       socket.on("connect", () => {
         console.log("A user is connected!");
@@ -45,16 +48,20 @@
 
       formEl.onsubmit = event => {
         event.preventDefault();
-        socket.emit("message", messageEl.value);
+        socket.emit("message", {room: 'chat', data: messageEl.value});
         messageEl.value = "";
         return false;
       };
 
       socket.on("response", message => {
-        console.log("response:", message);
+        console.log("response:", message['data']);
         const li = document.createElement("li");
-        li.innerText = message;
+        const sender = document.createElement("sender");
+        sender.innerText = message['sender'];
+        messageList.appendChild(sender);
+        li.innerText = message['data'];
         messageList.appendChild(li);
+        print(messageList)
       });
     </script>
   </body>

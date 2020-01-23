@@ -7,6 +7,8 @@ import time
 from flask import Flask, render_template
 import socketio
 
+user_sid = ""
+
 sio = socketio.Server(logger=True, async_mode=async_mode)
 app = Flask(__name__)
 app.wsgi_app = socketio.WSGIApp(sio, app.wsgi_app)
@@ -20,7 +22,7 @@ def background_thread():
     while True:
         sio.sleep(10)
         count += 1
-        sio.emit('my_response', {'data': 'Server generated event'})
+        #sio.emit('my_response', {'data': 'Server generated event'})
 
 
 @app.route('/')
@@ -98,12 +100,14 @@ def disconnect(sid):
 # Event handler for the "message" event.
 # See: https://python-socketio.readthedocs.io/en/latest/server.html#defining-event-handlers
 @sio.on("message")
-def handle_message(sid, data: str):
-    print("message:", data)
-    # Broadcast the received message to all connected clients.
+def handle_message(sid, data):
+    if user_sid != sid:
+        print("sid: ", sid + " ")
+    print("message: ", data['data'])
+    print("room: ", data['room'])
+    # Broadcast the received message to room.
     # See: https://python-socketio.readthedocs.io/en/latest/server.html#emitting-events
-    sio.emit("response", data)
-
+    sio.emit("response", {'sender': sid, 'data': data['data']}, room=data['room'])
 
 if __name__ == '__main__':
     if sio.async_mode == 'threading':
