@@ -12,11 +12,11 @@ app.config['MYSQL_PASSWORD'] = "bQDFy45cP2SlZItMHxqU"
 app.config['MYSQL_DB'] = "bm8hz3h5flr23o71hqco"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
-app.config['DEBUG'] = True
+# app.config['DEBUG'] = True
 
 mysql = MySQL(app)
 
-@app.route('/~/<username>/<password>', methods=['GET','POST'])
+@app.route('/<username>/<password>', methods=['GET','POST'])
 def login(username,password):
     mycursor = mysql.connection.cursor()
     query = "SELECT login_name, login_email FROM login WHERE login_name=%s AND login_password=sha1(%s)"
@@ -67,4 +67,5 @@ def register(username,password,email,role,review):
     return jsonify({'Registration':'Successful'})
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=8008)
+    # app.run(debug=True, host='0.0.0.0', port=8008)
+    app.run(host='0.0.0.0', port=8008)

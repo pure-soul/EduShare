@@ -108,25 +108,27 @@ def get_items_api(search):
 
 @app.route('/edushare/api/v1.0/<username>/<password>', methods = ['GET','POST'])
 def login(username, password):
-    login_url = '0.0.0.0:8008/~/' + username + '/' + password
-    return redirect(login_url, code=302)
+    # login_url = '0.0.0.0:8008/~/' + username + '/' + password
+    # return redirect(login_url, code=302)
 
-    # if exists(username, password):
-    #     return jsonify(getUser(username))
+    if exists(username, password):
+        return jsonify(getUser(username))
 
-@app.route('/edushare/api/v1.0/register/<username>/<password>/<email>/<role>/<review>', methods=['GET', 'POST'])
-def register(username, password, email, role, review):
-    register_url = '0.0.0.0:8008/~/' + username + '/' + password + '/' + email + '/' + role+ '/' + review
-    return redirect(register_url, code=302)
+# @app.route('/edushare/api/v1.0/register/<username>/<password>/<email>/<role>/<review>', methods=['GET', 'POST'])
+# def register(username, password, email, role, review):
+@app.route('/edushare/api/v1.0/register/<username>/<password>/<email>', methods=['GET', 'POST'])
+def register(username, password, email):
+    # register_url = '0.0.0.0:8008/~/' + username + '/' + password + '/' + email + '/' + role + '/' + review
+    # return redirect(register_url, code=302)
 
-    # user_ = {
-    #     'id': users[-1]['id'] + 1,
-    #     'name': username,
-    #     'email': email,
-    #     'password': password
-    # }
-    # users.append(user_)
-    # return jsonify(user_)
+    user_ = {
+        'id': users[-1]['id'] + 1,
+        'name': username,
+        'email': email,
+        'password': password
+    }
+    users.append(user_)
+    return jsonify(user_)
 
 #Supporting Functions
 
