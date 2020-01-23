@@ -16,7 +16,7 @@ app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
 mysql = MySQL(app)
 
-@app.route('/<username>/<password>', methods=['GET','POST'])
+@app.route('/~/<username>/<password>', methods=['GET','POST'])
 def login(username,password):
     mycursor = mysql.connection.cursor()
     query = "SELECT login_name, login_email FROM login WHERE login_name=%s AND login_password=sha1(%s)"
@@ -30,7 +30,7 @@ def login(username,password):
 def error():
     return jsonify({'error':'something went wrong'})
 
-@app.route('/~/register/<username>/<password>/<email>/<role>/<review>', methods=['GET','POST'])
+@app.route('/register/<username>/<password>/<email>/<role>/<review>', methods=['GET','POST'])
 def register(username,password,email,role,review):
 
     mycursor = mysql.connection.cursor()
@@ -68,4 +68,4 @@ def register(username,password,email,role,review):
 
 if __name__ == '__main__':
     # app.run(debug=True, host='0.0.0.0', port=8008)
-    app.run(host='0.0.0.0', port=8008)
+    app.run(host='0.0.0.0', port=8000)
