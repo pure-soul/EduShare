@@ -6,10 +6,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,7 +30,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private static final String TAG = RegisterActivity.class.getSimpleName();
     EditText mFName;
@@ -39,7 +42,9 @@ public class RegisterActivity extends AppCompatActivity {
     TextView mLogin;
     Button mPeer;
     RadioGroup radioGroup;
-    RadioButton radioButton;
+    RadioButton radioButton, radioTutor, radioStudent;
+    Spinner mCategory;
+    Spinner mPreference;
     private SessionManager session;
 
 
@@ -50,6 +55,8 @@ public class RegisterActivity extends AppCompatActivity {
 
         mFName = (EditText) findViewById(R.id.first_name);
         mLName = (EditText) findViewById(R.id.last_name);
+        mCategory = (Spinner) findViewById(R.id.category);
+        mPreference = (Spinner) findViewById(R.id.preference);
         mEmail = (EditText) findViewById(R.id.email_address);
         mPassword = (EditText) findViewById(R.id.reg_password);
         mConfirmPassword = (EditText) findViewById(R.id.reg_confirm_password);
@@ -101,6 +108,17 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             }
         });
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.categories, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        mCategory.setAdapter(adapter);
+        mCategory.setOnItemSelectedListener(this);
+
+        ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(this, R.array.preferences, android.R.layout.simple_spinner_item);
+        adapter1.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        mPreference.setAdapter(adapter1);
+        mPreference.setOnItemSelectedListener(this);
+
     }
 
     private void registerUser(final String fname, final String email,
@@ -174,5 +192,24 @@ public class RegisterActivity extends AppCompatActivity {
         //to get the text from the radio button (for future use)
         //radioButton.getText();
         Profile.setType((String) radioButton.getText());
+
+        String status = (String) radioButton.getText();
+
+        if (status == "tutor"){
+            mCategory.setVisibility(View.VISIBLE);
+            mPreference.setVisibility(View.VISIBLE);
+        }
+
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        String text = adapterView.getItemAtPosition(i).toString();
+        Profile.setCategory(text);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
     }
 }
