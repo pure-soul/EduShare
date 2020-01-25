@@ -37,3 +37,4 @@ docker run [-p <implemented port>:<replacement port>] <image name>
 Current image names:
 edusharemain
 edusharedb
+edusharechat
