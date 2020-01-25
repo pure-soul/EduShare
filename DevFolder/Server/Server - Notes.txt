@@ -17,7 +17,7 @@ Sunday, January 19, 2020 - Started working on chat.
 
 There are currently two different chat files with two slightly different approaches:
 
-chat.py - attempting to implement just socket.io according to documentation provided by 		developers @ https://python-socketio.readthedocs.io/en/latest/server.html#
+chat.py - attempting to implement just socket.io according to documentation provided by developers @ https://python-socketio.readthedocs.io/en/latest/server.html#
 
 chatapp.py - attempting to implement socket.io using Bocadillo according to 
 		@ https://bocadilloproject.github.io/how-to/socketio.html#planning
@@ -34,6 +34,16 @@ docker push dmss/edushare:<tag>
 Running image:
 docker run -p <implemented port>:<replacement port> <image name>
 
+Pulling image:
+docker image pull [OPTIONS] dmss/edushare[:<tag>|@DIGEST]
+
 Current image names -- > tag names:
 edusharemain [implemented on port 80]--> server_version1
 edusharechat [implemented on port 50]--> chat_version1
+
+Saturday, January 25, 2020 - Added code for encryption and decryption (check https://github.com/ijl20/python_java_crypto)
+
+Key= 'neVEraSkeDaNIgGaFOsh!T,ThATiSSAfetOsAy!'
+Salt = 'whAtYOuCAlLabiTChWHoDonTsuCkdIcK,YADOnT'
+
+EduShare Server now grabs next 10 and previous 10 results on request...

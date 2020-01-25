@@ -12,3 +12,6 @@ docker push dmss/edushare:db_version1
 
 Running image:
 docker run -p 8000:8000 edusharedb
+
+Pulling image:
+docker image pull [OPTIONS] dmss/edushare:db_version1

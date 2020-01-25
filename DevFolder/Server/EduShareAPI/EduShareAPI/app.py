@@ -1,65 +1,11 @@
-from flask import Flask, jsonify, abort, make_response, render_template, redirect
+from flask import Flask, jsonify, abort, make_response, render_template, redirect, request
 import html
+import requests
+# Encrytion and Decrytion Code
+from crypt import encrypt_with_AES, decrypt_with_AES,secret_key,salt
+# Sample Items
+from content import items, users, api
 
-import socket
-#import fcntl
-#import struct
-#import requests
-
-items = [
-    {
-        'id' : u'7459237505',
-        'title': u'Lasco Milk',
-        'content': u'Milk Powder by Lasco',
-        'link': u'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjFKz_2QaOroxoCC11ed4Jmti3gIAMM765Hsu-Hnlvf2VikD4A7g',
-        'tags': u'#milk#lasco#lasco milk'
-    },
-    {
-        'id' : u'9859237505',
-        'title': u'Serge Milk',
-        'content': u'Milk by Serger',
-        'link': u'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjFKz_2QaOroxoCC11ed4Jmti3gIAMM765Hsu-Hnlvf2VikD4A7g',
-        'tags' : u'#milk#serge#serge milk'
-    },
-    {
-        'id' : u'9369256538',
-        'title': u'Trix Cereal',
-        'content': u'Cereal by Trix',
-        'link': u'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjFKz_2QaOroxoCC11ed4Jmti3gIAMM765Hsu-Hnlvf2VikD4A7g',
-        'tags': u'#cereal#trix#trix cereal'
-    },
-    {
-        'id' : u'73946844246',
-        'title': u'Grace Mackerel',
-        'content': u'Tin Macerel by Grace',
-        'link': u'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjFKz_2QaOroxoCC11ed4Jmti3gIAMM765Hsu-Hnlvf2VikD4A7g',
-        'tags': u'#mackerel#grace#grace mackerel'
-    },
-    {
-        'id' : u'328754413',
-        'title': u'National Bread',
-        'content': u'Bread by NationPal Bakery',
-        'link': u'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjFKz_2QaOroxoCC11ed4Jmti3gIAMM765Hsu-Hnlvf2VikD4A7g',
-        'tags': u'#bread#national#national bread#popular'
-    }
-]
-
-users = [
-    {
-        'id': 111111111111,
-        'name': 'puresoul',
-        'password': 'gottapuresoul',
-        'email': 'pure@soulmail.com'
-    }
-]
-
-api = [
-    {
-        'key': 'AIzaSyBpvYniltDN972kSlE7tOrdmJsqrjLS3GU',
-        'engine_id': '015449310451191663041:twljm0b8cev',
-        'search': 'https://www.googleapis.com/customsearch/v1?key=AIzaSyBpvYniltDN972kSlE7tOrdmJsqrjLS3GU&cx=015449310451191663041:twljm0b8cev&q='
-    }
-]
 
 app = Flask(__name__, template_folder='Forms')
 
@@ -74,13 +20,6 @@ def hello():
     return render_template('home.html')
     #return "Welcome to Edushare!"
 
-@app.route('/getip')
-def get_ip():
-    #get_ip_address('eth0')
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    s.connect(('0.0.0.0', 80))
-    return s.getsockname()[0]
-
 @app.route('/edushare/api/v1.0/search', methods = ['GET','POST'])
 def search():
     """Renders a search page (as templated from https://codepen.io/adobewordpress/pen/gbewLV)"""
@@ -94,43 +33,43 @@ def get_items(search):
 
 @app.route('/edushare/api/v1.0/apisearch/<search>', methods = ['GET'])
 def get_items_api(search):
-    #search_url = api['search'] + search
-    search_url = 'https://www.googleapis.com/customsearch/v1?key=AIzaSyBpvYniltDN972kSlE7tOrdmJsqrjLS3GU&cx=015449310451191663041:twljm0b8cev&q=' + search
-    return redirect(search_url, code=302)
+    search_url = api.get('search_template').replace('{key}', api.get('key')).replace('{id}',api.get('engine_id')).replace('{search_term}',search)
+    r = requests.get(search_url)
+    _results = r.json()
+    return jsonify({'items':_results['items'],'queries':_results['queries']['request'][0]}) #redirect(search_url, code=302)
 
-    #3 search = requests.get('https://www.googleapis.com/customsearch/v1?key=AIzaSyBpvYniltDN972kSlE7tOrdmJsqrjLS3GU&cx=015449310451191663041:twljm0b8cev&q=' + search)
-    #3 return search['items']
+@app.route('/edushare/api/v1.0/apisearch/next', methods = ['POST'])
+def get_next():
+    if not request.json:
+        abort(400)
+    results = get_next_ten(request.json['queries'])
+    return jsonify({'items':results['items'],'queries':results['queries']['request'][0]})
 
-    #4 response = urllib.request.urlretrieve(search_url)
-    #4 data = json.loads(response)
-    #4 return data['items']
-
+@app.route('/edushare/api/v1.0/apisearch/previous', methods = ['POST'])
+def get_previous():
+    if not request.json:
+        abort(400)
+    results = get_previous_ten(request.json['queries'])
+    return jsonify({'items':results['items'],'queries':results['queries']['request'][0]})
 
 @app.route('/edushare/api/v1.0/<username>/<password>', methods = ['GET','POST'])
 def login(username, password):
-    # login_url = '0.0.0.0:8008/~/' + username + '/' + password
-    # return redirect(login_url, code=302)
 
-    if exists(username, password):
-        return jsonify(getUser(username))
+    cipher = encrypt_with_AES(password, secret_key, salt)
+    print("Cipher: " + cipher)
 
-# @app.route('/edushare/api/v1.0/register/<username>/<password>/<email>/<role>/<review>', methods=['GET', 'POST'])
-# def register(username, password, email, role, review):
-@app.route('/edushare/api/v1.0/register/<username>/<password>/<email>', methods=['GET', 'POST'])
-def register(username, password, email):
-    # register_url = '0.0.0.0:8008/~/' + username + '/' + password + '/' + email + '/' + role + '/' + review
-    # return redirect(register_url, code=302)
+    decrypted = decrypt_with_AES(cipher, secret_key, salt)
+    print("Decrypted " + decrypted)
 
-    user_ = {
-        'id': users[-1]['id'] + 1,
-        'name': username,
-        'email': email,
-        'password': password
-    }
-    users.append(user_)
-    return jsonify(user_)
+    login_url = 'http://0.0.0.0:8000/~/' + username + '/' + password
+    l = requests.get(login_url)
+    return l.json() #redirect(login_url, code=302)
 
-#Supporting Functions
+@app.route('/edushare/api/v1.0/register/<username>/<password>/<email>/<role>/<review>', methods=['GET', 'POST'])
+def register(username, password, email, role, review):
+    register_url = 'http://0.0.0.0:8000/~/register/' + username + '/' + password + '/' + email + '/' + role + '/' + review
+    s = requests.get(register_url)
+    return s.json() #redirect(register_url, code=302)
 
 def get_items_with(string):
     item = [item for item in items if string in item['tags']]
@@ -138,21 +77,23 @@ def get_items_with(string):
         abort(404)
     return item
 
-def exists(name, password):
-    user = [user for user in users if name == user['name'] and password == user['password']]
-    if len(user) == 0:
-        abort(404)
-    return True
+def get_next_ten(query_data):
+    if query_data['startIndex'] == int(query_data['totalResults']):
+        return(jsonify({'error': 'No More Results', 'items': '-'}))
+    else:
+        startIndex =  query_data['startIndex'] + 10
+        _url_template = api.get('search_template_2').replace('{searchTerms}',query_data['searchTerms']).replace('{count?}',str(query_data['count'])).replace('{startIndex?}',str(startIndex)).replace('{cx?}',api.get('engine_id')).replace('{safe?}',query_data['safe']).replace('{key}',api.get('key'))
+        search_results = requests.get(_url_template)     
+        return search_results.json()
 
-def getUser(string):
-    user = [user for user in users if string == user['name']]
-    if len(user) == 0:
-        abort(404)
-    return user
-
-def get_ip_address(ifname):
-    s = socket.socket(socket.IPPORT_USERRESERVED, socket.SOCK_DGRAM)
-    return socket.inet_ntoa(fcntl.ioctl(s.fileno(), 0x8915, struct.pack('256s', ifname[:15]))[20:24])
+def get_previous_ten(query_data):
+    if query_data['startIndex'] == 1:
+        return(jsonify({'error': 'Invalid Request', 'items': '-'}))
+    else :
+        startIndex =  query_data['startIndex'] - 10
+        _url_template = api.get('search_template_2').replace('{searchTerms}',query_data['searchTerms']).replace('{count?}',str(query_data['count'])).replace('{startIndex?}',str(startIndex)).replace('{cx?}',api.get('engine_id')).replace('{safe?}',query_data['safe']).replace('{key}',api.get('key'))
+        search_results = requests.get(_url_template)     
+        return search_results.json()
 
 #Error Handlers
 

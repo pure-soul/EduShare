@@ -30,7 +30,7 @@ def login(username,password):
 def error():
     return jsonify({'error':'something went wrong'})
 
-@app.route('/register/<username>/<password>/<email>/<role>/<review>', methods=['GET','POST'])
+@app.route('/~/register/<username>/<password>/<email>/<role>/<review>', methods=['GET','POST'])
 def register(username,password,email,role,review):
 
     mycursor = mysql.connection.cursor()
