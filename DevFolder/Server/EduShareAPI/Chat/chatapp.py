@@ -13,7 +13,7 @@ my_ip = '45.56.155.177'
 sio = socketio.Server(logger=True, async_mode=async_mode)
 app = Flask(__name__)
 app.wsgi_app = socketio.WSGIApp(sio, app.wsgi_app)
-app.config['SECRET_KEY'] = 'secret!'
+app.config['SECRET_KEY'] = 'neVEraSkeDaNIgGaFOsh!T,ThATiSSAfetOsAy!'
 thread = None
 
 
@@ -113,12 +113,12 @@ def handle_message(sid, data):
 if __name__ == '__main__':
     if sio.async_mode == 'threading':
         # deploy with Werkzeug
-        app.run(threaded=True, host='0.0.0.0', port=5000)
+        app.run(threaded=True, host='0.0.0.0', port=50)
     elif sio.async_mode == 'eventlet':
         # deploy with eventlet
         import eventlet
         import eventlet.wsgi
-        eventlet.wsgi.server(eventlet.listen(('0.0.0.0', 5000)), app)
+        eventlet.wsgi.server(eventlet.listen(('0.0.0.0', 50)), app)
     elif sio.async_mode == 'gevent':
         # deploy with gevent
         from gevent import pywsgi
@@ -128,10 +128,10 @@ if __name__ == '__main__':
         except ImportError:
             websocket = False
         if websocket:
-            pywsgi.WSGIServer(('0.0.0.0', 5000), app,
+            pywsgi.WSGIServer(('0.0.0.0', 50), app,
                               handler_class=WebSocketHandler).serve_forever()
         else:
-            pywsgi.WSGIServer(('0.0.0.0', 5000), app).serve_forever()
+            pywsgi.WSGIServer(('0.0.0.0', 50), app).serve_forever()
     elif sio.async_mode == 'gevent_uwsgi':
         print('Start the application through the uwsgi server. Example:')
         print('uwsgi --http :5000 --gevent 1000 --http-websockets --master '

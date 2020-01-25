@@ -2,3 +2,13 @@ This environment contains all files related to the DBMS platform developed for E
 
 Visio Variant \EduShareDBMS
 VSCode Variant \env\app.py
+
+Thursday, January 19, 2020 - Started pushing python files to docker for easier remote access. Keep the steps in mind for updating docker repositories:
+
+docker build -t edusharedb .
+docker login
+docker tag edusharedb dmss/edushare:db_version1
+docker push dmss/edushare:db_version1
+
+Running image:
+docker run [-p <implemented port>:<replacement port>] edusharedb
