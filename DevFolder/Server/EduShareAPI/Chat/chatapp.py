@@ -113,7 +113,7 @@ def handle_message(sid, data):
 if __name__ == '__main__':
     if sio.async_mode == 'threading':
         # deploy with Werkzeug
-        app.run(threaded=True, host='0.0.0.0', port='50')
+        app.run(threaded=True, host='0.0.0.0', port=5000)
     elif sio.async_mode == 'eventlet':
         # deploy with eventlet
         import eventlet
