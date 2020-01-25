@@ -11,4 +11,4 @@ docker tag edusharedb dmss/edushare:db_version1
 docker push dmss/edushare:db_version1
 
 Running image:
-docker run [-p <implemented port>:<replacement port>] edusharedb
+docker run -p 8000:8000 edusharedb

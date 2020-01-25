@@ -32,8 +32,8 @@ docker tag <image name> dmss/edushare:<tag>
 docker push dmss/edushare:<tag>
 
 Running image:
-docker run [-p <implemented port>:<replacement port>] <image name>
+docker run -p <implemented port>:<replacement port> <image name>
 
 Current image names -- > tag names:
-edusharemain --> server_version1
-edusharechat --> chat_version1
+edusharemain [implemented on port 80]--> server_version1
+edusharechat [implemented on port 50]--> chat_version1
