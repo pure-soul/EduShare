@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, make_response, request, redirect, url_for, abort
 from flask_mysqldb import MySQL
+import MySQLdb
 from werkzeug.urls import url_parse
 from werkzeug.security import generate_password_hash, check_password_hash
 from urllib.parse import unquote
@@ -38,11 +39,7 @@ def error():
 def denied(error):
     return make_response(jsonify({"error":"The task could not be completed at this time"}))
 
-<<<<<<< HEAD
 @app.route('/register', methods=['POST'])
-=======
-@app.route('/register', methods=['GET','POST'])
->>>>>>> 0936e3f4dbfc2a34dcb90c83bcbc2a3ee9f6c03b
 def register():
     if not request.json:
         abort(400)
@@ -86,6 +83,7 @@ def register():
         
         mysql.connection.commit()
     except (MySQLdb.Error, MySQLdb.Warning) as e:
+        e=str(e)
         return jsonify({"error":e})
 
     return jsonify({'Registration':'Successful'})
