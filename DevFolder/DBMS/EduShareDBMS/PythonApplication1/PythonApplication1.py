@@ -32,11 +32,19 @@ def error():
 
 @app.route('/~/register/<username>/<password>/<email>/<role>/<review>', methods=['GET','POST'])
 def register(username,password,email,role,review):
-
+    if not request.json:
+        abort(400)
+    username = request.json['username']
+    email = request.json['email']
+    password = request.json['password']
+    role = request.json['role']
+    review = request.json['review']
+    name = request.json['name']
     mycursor = mysql.connection.cursor()
     query = "INSERT INTO users (user_name, user_email) VALUES (%s, %s)"
     mycursor.execute(query,(username,email))
-    query = "INSERT INTO login (login_name, login_email,login_password) VALUES (%s, %s, SHA1(%s))"
+    mysql.connection.commit()
+    query = "INSERT INTO login (login_name, login_email,login_password,user_id) VALUES (%s, %s, SHA1(%s),LAST_INSERT_ID())"
     mycursor.execute(query,(username,email,password))
     mysql.connection.commit()
 
