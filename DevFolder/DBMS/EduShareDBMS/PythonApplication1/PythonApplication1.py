@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, make_response, request, redirect, url_for
+from flask import Flask, jsonify, make_response, request, redirect, url_for, abort
 from flask_mysqldb import MySQL
 from werkzeug.urls import url_parse
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -16,8 +16,12 @@ app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
 mysql = MySQL(app)
 
-@app.route('/~/<username>/<password>', methods=['GET','POST'])
-def login(username,password):
+@app.route('/login', methods=['POST'])
+def login():
+    if not request.json:
+        abort(400)
+    username = request.json['username']
+    password = request.json['password']
     mycursor = mysql.connection.cursor()
     query = "SELECT login_name, login_email FROM login WHERE login_name=%s AND login_password=sha1(%s)"
     mycursor.execute(query, (username,password))
@@ -30,8 +34,12 @@ def login(username,password):
 def error():
     return jsonify({'error':'something went wrong'})
 
-@app.route('/~/register/<username>/<password>/<email>/<role>/<review>', methods=['GET','POST'])
-def register(username,password,email,role,review):
+@app.errorhandler(500)
+def denied(error):
+    return make_response(jsonify({"error":"The task could not be completed at this time"}))
+
+@app.route('/register', methods=['POST'])
+def register():
     if not request.json:
         abort(400)
     username = request.json['username']
@@ -42,7 +50,7 @@ def register(username,password,email,role,review):
     name = request.json['name']
     mycursor = mysql.connection.cursor()
     query = "INSERT INTO users (user_name, user_email) VALUES (%s, %s)"
-    mycursor.execute(query,(username,email))
+    mycursor.execute(query,(name,email))
     mysql.connection.commit()
     query = "INSERT INTO login (login_name, login_email,login_password,user_id) VALUES (%s, %s, SHA1(%s),LAST_INSERT_ID())"
     mycursor.execute(query,(username,email,password))
