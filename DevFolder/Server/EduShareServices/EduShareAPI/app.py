@@ -70,6 +70,7 @@ def register(username, password, email, role, review, name):
     register_url = 'http://0.0.0.0:8000/~/register/' # + username + '/' + password + '/' + email + '/' + role + '/' + review
     s = requests.post(register_url, data={'username':username,'password':password,'role':role,'review':review,'name':name})
     # s = requests.get(register_url)
+    print(s)
     return s.json() #redirect(register_url, code=302)
 
 def get_items_with(string):
