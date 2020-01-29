@@ -68,17 +68,17 @@ def login(username, password):
 @app.route('/edushare/api/v1.0/register/<username>/<password>/<email>/<role>/<review>/<name>', methods=['GET', 'POST'])
 def register(username, password, email, role, review, name):
     register_url = 'http://0.0.0.0:8000/register' # + username + '/' + password + '/' + email + '/' + role + '/' + review
-    s = requests.post(register_url, data = jsonify({'username':username,'password':password,'role':role,'review':review,'name':name}))
+    s = requests.post(register_url, data = {'username':username,'password':password,'role':role,'review':review,'name':name})
     # s = requests.get(register_url)
-    # if s.ok:
-    #     print(s)
-    #     return s.json() #redirect(register_url, code=302)
-    # abort(400)
-    try:
+    if s.ok:
         print(s)
         return s.json() #redirect(register_url, code=302)
-    except TypeError:
-        abort(400)
+    abort(400)
+    # try:
+    #     print(s)
+    #     return s.json() #redirect(register_url, code=302)
+    # except TypeError,e:
+    #     abort(400)
 
 def get_items_with(string):
     item = [item for item in items if string in item['tags']]
