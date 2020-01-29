@@ -12,7 +12,7 @@ app.config['MYSQL_PASSWORD'] = "bQDFy45cP2SlZItMHxqU"
 app.config['MYSQL_DB'] = "bm8hz3h5flr23o71hqco"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
-app.config['DEBUG'] = True
+# app.config['DEBUG'] = True
 
 mysql = MySQL(app)
 
@@ -32,11 +32,19 @@ def error():
 
 @app.route('/~/register/<username>/<password>/<email>/<role>/<review>', methods=['GET','POST'])
 def register(username,password,email,role,review):
-
+    if not request.json:
+        abort(400)
+    username = request.json['username']
+    email = request.json['email']
+    password = request.json['password']
+    role = request.json['role']
+    review = request.json['review']
+    name = request.json['name']
     mycursor = mysql.connection.cursor()
     query = "INSERT INTO users (user_name, user_email) VALUES (%s, %s)"
     mycursor.execute(query,(username,email))
-    query = "INSERT INTO login (login_name, login_email,login_password) VALUES (%s, %s, SHA1(%s))"
+    mysql.connection.commit()
+    query = "INSERT INTO login (login_name, login_email,login_password,user_id) VALUES (%s, %s, SHA1(%s),LAST_INSERT_ID())"
     mycursor.execute(query,(username,email,password))
     mysql.connection.commit()
 
@@ -67,4 +75,5 @@ def register(username,password,email,role,review):
     return jsonify({'Registration':'Successful'})
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port='8008')
+    # app.run(debug=True, host='0.0.0.0', port=8008)
+    app.run(host='0.0.0.0', port=8000)
