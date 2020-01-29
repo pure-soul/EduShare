@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, make_response, request, redirect, url_for
+from flask import Flask, jsonify, make_response, request, redirect, url_for, abort
 from flask_mysqldb import MySQL
 from werkzeug.urls import url_parse
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -32,7 +32,7 @@ def error():
 
 # @app.route('/~/register/<username>/<password>/<email>/<role>/<review>', methods=['GET','POST'])
 # def register(username,password,email,role,review):
-@app.route('/~/register', methods=['GET','POST'])
+@app.route('/~/register/', methods=['GET','POST'])
 def register():
     if not request.json:
         abort(400)

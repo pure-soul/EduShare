@@ -68,7 +68,7 @@ def login(username, password):
 @app.route('/edushare/api/v1.0/register/<username>/<password>/<email>/<role>/<review>/<name>', methods=['GET', 'POST'])
 def register(username, password, email, role, review, name):
     register_url = 'http://0.0.0.0:8000/~/register/' # + username + '/' + password + '/' + email + '/' + role + '/' + review
-    s = requests.put(register_url, data={'username':username,'password':password,'role':role,'review':review,'name':name})
+    s = requests.post(register_url, data={'username':username,'password':password,'role':role,'review':review,'name':name})
     # s = requests.get(register_url)
     return s.json() #redirect(register_url, code=302)
 
