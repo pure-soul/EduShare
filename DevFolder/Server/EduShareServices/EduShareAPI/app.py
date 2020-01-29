@@ -2,7 +2,7 @@ from flask import Flask, jsonify, abort, make_response, render_template, redirec
 import html
 import requests
 # Encrytion and Decrytion Code
-from crypt import encrypt_with_AES, decrypt_with_AES,secret_key,salt
+from crypt import *
 # Sample Items
 from content import items, users, api
 
@@ -107,10 +107,10 @@ def invalid_upload(error):
 
 if __name__ == '__main__':
     import os
-    HOST = os.environ.get('SERVER_HOST', 'localhost')
+    HOST = os.environ.get('SERVER_HOST', '0.0.0.0')
     try:
-        PORT = int(os.environ.get('SERVER_PORT', '5555'))
+        PORT = int(os.environ.get('SERVER_PORT', '80'))
     except ValueError:
-        PORT = 5555
-    #app.run(HOST, PORT)
-    app.run(host='0.0.0.0', port=80)
+        PORT = 80
+    app.run(HOST, PORT)
+    # app.run(host='0.0.0.0', port=80)

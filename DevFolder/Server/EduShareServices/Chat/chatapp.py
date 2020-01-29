@@ -7,7 +7,7 @@ import time
 from flask import Flask, render_template
 import socketio
 
-user_sid = ""
+user_sid = ''
 my_ip = '45.56.155.177'
 
 sio = socketio.Server(logger=True, async_mode=async_mode)
@@ -23,7 +23,7 @@ def background_thread():
     while True:
         sio.sleep(10)
         count += 1
-        #sio.emit('my_response', {'data': 'Server generated event'})
+        #sio.emit('edushare_response', {'data': 'Server generated event'})
 
 
 @app.route('/')
@@ -49,31 +49,31 @@ def chat2():
 
 @sio.event
 def my_event(sid, message):
-    sio.emit('my_response', {'data': message['data']}, room=sid)
+    sio.emit('edushare_response', {'data': message['data']}, room=sid)
 
 
 @sio.event
 def my_broadcast_event(sid, message):
-    sio.emit('my_response', {'data': message['data']})
+    sio.emit('edushare_response', {'data': message['data']})
 
 
 @sio.event
 def join(sid, message):
     sio.enter_room(sid, message['room'])
-    sio.emit('my_response', {'data': 'Entered room: ' + message['room']},
+    sio.emit('edushare_response', {'data': 'Entered room: ' + message['room']},
              room=sid)
 
 
 @sio.event
 def leave(sid, message):
     sio.leave_room(sid, message['room'])
-    sio.emit('my_response', {'data': 'Left room: ' + message['room']},
+    sio.emit('edushare_response', {'data': 'Left room: ' + message['room']},
              room=sid)
 
 
 @sio.event
 def close_room(sid, message):
-    sio.emit('my_response',
+    sio.emit('edushare_response',
              {'data': 'Room ' + message['room'] + ' is closing.'},
              room=message['room'])
     sio.close_room(message['room'])
@@ -81,7 +81,7 @@ def close_room(sid, message):
 
 @sio.event
 def my_room_event(sid, message):
-    sio.emit('my_response', {'data': message['data']}, room=message['room'])
+    sio.emit('edushare_response', {'data': message['data']}, room=message['room'])
 
 
 @sio.event
@@ -91,7 +91,7 @@ def disconnect_request(sid):
 
 @sio.event
 def connect(sid, environ):
-    sio.emit('my_response', {'data': 'Connected', 'count': 0}, room=sid)
+    sio.emit('edushare_response', {'data': 'Connected', 'count': 0}, room=sid)
 
 
 @sio.event
@@ -102,13 +102,15 @@ def disconnect(sid):
 # See: https://python-socketio.readthedocs.io/en/latest/server.html#defining-event-handlers
 @sio.on("message")
 def handle_message(sid, data):
+    global user_sid
     if user_sid != sid:
-        print("sid: ", sid + " ")
+        print("sid: ", sid)
+        user_sid = sid
     print("message: ", data['data'])
     print("room: ", data['room'])
     # Broadcast the received message to room.
     # See: https://python-socketio.readthedocs.io/en/latest/server.html#emitting-events
-    sio.emit("response", {'sender': sid, 'data': data['data']}, room=data['room'])
+    sio.emit("edushare_response", {'sender': sid, 'data': data['data']}, room=data['room'])
 
 if __name__ == '__main__':
     if sio.async_mode == 'threading':

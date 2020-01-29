@@ -53,8 +53,8 @@
         return false;
       };
 
-      socket.on("response", message => {
-        console.log("response:", message['data']);
+      socket.on('edushare_response', message => {
+        console.log("edushare_response:", message['data']);
         const li = document.createElement("li");
         const sender = document.createElement("sender");
         sender.innerText = message['sender'];
