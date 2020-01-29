@@ -34,17 +34,11 @@ def login():
 def error():
     return jsonify({'error':'something went wrong'})
 
-<<<<<<< HEAD
 @app.errorhandler(500)
 def denied(error):
     return make_response(jsonify({"error":"The task could not be completed at this time"}))
 
 @app.route('/register', methods=['POST'])
-=======
-# @app.route('/~/register/<username>/<password>/<email>/<role>/<review>', methods=['GET','POST'])
-# def register(username,password,email,role,review):
-@app.route('/~/register/', methods=['GET','POST'])
->>>>>>> 73254966faa419ccb579a0da4e900b7844679a26
 def register():
     if not request.json:
         abort(400)
@@ -54,41 +48,43 @@ def register():
     role = request.json['role']
     review = request.json['review']
     name = request.json['name']
-    
-    mycursor = mysql.connection.cursor()
-    query = "INSERT INTO users (user_name, user_email) VALUES (%s, %s)"
-    mycursor.execute(query,(name,email))
-    mysql.connection.commit()
-    query = "INSERT INTO login (login_name, login_email,login_password,user_id) VALUES (%s, %s, SHA1(%s),LAST_INSERT_ID())"
-    mycursor.execute(query,(username,email,password))
-    mysql.connection.commit()
+    try:
+        mycursor = mysql.connection.cursor()
+        query = "INSERT INTO users (user_name, user_email) VALUES (%s, %s)"
+        mycursor.execute(query,(name,email))
+        mysql.connection.commit()
+        query = "INSERT INTO login (login_name, login_email,login_password,user_id) VALUES (%s, %s, SHA1(%s),LAST_INSERT_ID())"
+        mycursor.execute(query,(username,email,password))
+        mysql.connection.commit()
 
-    c = v = e = u = "Y"
-    if review == "Yes":
-        r = "Y"
-    else:
-        r = "N"
+        c = v = e = u = "Y"
+        if review == "Yes":
+            r = "Y"
+        else:
+            r = "N"
 
 
-    query = "INSERT INTO users_roles (user_id, role_id, can_chat, can_review, can_view, can_edit, can_upload) VALUES (%s, %s, %s, %s, %s, %s, %s)"
-    
-    sub_query = "SELECT LAST_INSERT_ID() FROM users"
-    
-    sub_query2 = "SELECT role_id FROM roles WHERE role_name=%s"
-    
-    mycursor.execute(sub_query2,(role,))
-    fetchedrole = mycursor.fetchone()
-    fetchedrole = fetchedrole['role_id']
+        query = "INSERT INTO users_roles (user_id, role_id, can_chat, can_review, can_view, can_edit, can_upload) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+        
+        sub_query = "SELECT LAST_INSERT_ID() FROM users"
+        
+        sub_query2 = "SELECT role_id FROM roles WHERE role_name=%s"
+        
+        mycursor.execute(sub_query2,(role,))
+        fetchedrole = mycursor.fetchone()
+        fetchedrole = fetchedrole['role_id']
 
-    mycursor.execute(sub_query)
-    fetchedid = mycursor.fetchone()
-    fetchedid = fetchedid['LAST_INSERT_ID()']
+        mycursor.execute(sub_query)
+        fetchedid = mycursor.fetchone()
+        fetchedid = fetchedid['LAST_INSERT_ID()']
 
-    mycursor.execute(query,(fetchedid,fetchedrole,c,r,v,e,u)) 
-    
-    mysql.connection.commit()
+        mycursor.execute(query,(fetchedid,fetchedrole,c,r,v,e,u)) 
+        
+        mysql.connection.commit()
+    except (MySQLdb.Error, MySQLdb.Warning) as e:
+        return jsonify({"error":e})
+
     return jsonify({'Registration':'Successful'})
 
 if __name__ == '__main__':
-    # app.run(debug=True, host='0.0.0.0', port=8008)
     app.run(host='0.0.0.0', port=8000)
