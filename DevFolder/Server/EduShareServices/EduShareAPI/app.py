@@ -4,7 +4,7 @@ import requests
 # Encrytion and Decrytion Code
 from crypt import *
 # Sample Items
-from content import items, users, api
+from content import *
 
 
 app = Flask(__name__, template_folder='Forms')
@@ -65,10 +65,12 @@ def login(username, password):
     l = requests.get(login_url)
     return l.json() #redirect(login_url, code=302)
 
-@app.route('/edushare/api/v1.0/register/<username>/<password>/<email>/<role>/<review>', methods=['GET', 'POST'])
-def register(username, password, email, role, review):
-    register_url = 'http://0.0.0.0:8000/~/register/' + username + '/' + password + '/' + email + '/' + role + '/' + review
-    s = requests.get(register_url)
+@app.route('/edushare/api/v1.0/register/<username>/<password>/<email>/<role>/<review>/<name>', methods=['GET', 'POST'])
+def register(username, password, email, role, review, name):
+    register_url = 'http://0.0.0.0:8000/~/register/' # + username + '/' + password + '/' + email + '/' + role + '/' + review
+    s = requests.post(register_url, data={'username':username,'password':password,'role':role,'review':review,'name':name})
+    # s = requests.get(register_url)
+    print(s)
     return s.json() #redirect(register_url, code=302)
 
 def get_items_with(string):

@@ -34,11 +34,17 @@ def login():
 def error():
     return jsonify({'error':'something went wrong'})
 
+<<<<<<< HEAD
 @app.errorhandler(500)
 def denied(error):
     return make_response(jsonify({"error":"The task could not be completed at this time"}))
 
 @app.route('/register', methods=['POST'])
+=======
+# @app.route('/~/register/<username>/<password>/<email>/<role>/<review>', methods=['GET','POST'])
+# def register(username,password,email,role,review):
+@app.route('/~/register/', methods=['GET','POST'])
+>>>>>>> 73254966faa419ccb579a0da4e900b7844679a26
 def register():
     if not request.json:
         abort(400)
@@ -48,6 +54,7 @@ def register():
     role = request.json['role']
     review = request.json['review']
     name = request.json['name']
+    
     mycursor = mysql.connection.cursor()
     query = "INSERT INTO users (user_name, user_email) VALUES (%s, %s)"
     mycursor.execute(query,(name,email))
