@@ -1,8 +1,10 @@
-from flask import Flask, jsonify, make_response, request, redirect, url_for, abort
+from flask import Flask, jsonify, make_response, request, redirect, url_for, abort, render_template
 from flask_mysqldb import MySQL
+import MySQLdb
 from werkzeug.urls import url_parse
 from werkzeug.security import generate_password_hash, check_password_hash
 from urllib.parse import unquote
+import pdb
 
 app = Flask(__name__)
 
@@ -15,6 +17,35 @@ app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 # app.config['DEBUG'] = True
 
 mysql = MySQL(app)
+
+@app.route('/')
+def index():
+    return render_template('form.html')
+
+@app.route('/upload', methods=['GET','POST'])
+def upload():
+    f = request.files['inputFile']
+    file_name = f.filename
+    file_file = f.read()
+    author = "Kenny Rodgers"
+    reviews = "Mostly Bad"
+    mycursor = mysql.connection.cursor()
+    query = "INSERT INTO documents (document_title, document_authors, document_reviews, document_file) VALUES (%s, %s, %s, %s)" 
+    mycursor.execute(query, (file_name,author,reviews,file_file))
+    mysql.connection.commit()
+    return f.filename
+
+@app.route('/uploadmedia', methods=['GET','POST'])
+def uploadmedia():
+    f = request.files['secondFile']
+    file_name = f.filename
+    file_file = f.read()
+    author = "Felleria Stephens"
+    mycursor = mysql.connection.cursor()
+    query = "INSERT INTO media (media_title, media_authors, media_file) VALUES (%s, %s, %s)" 
+    mycursor.execute(query, (file_name,author,file_file))
+    mysql.connection.commit()
+    return f.filename
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -82,6 +113,7 @@ def register():
         
         mysql.connection.commit()
     except (MySQLdb.Error, MySQLdb.Warning) as e:
+        e=str(e)
         return jsonify({"error":e})
 
     return jsonify({'Registration':'Successful'})

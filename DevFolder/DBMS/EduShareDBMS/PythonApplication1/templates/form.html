@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <title>File Input</title>
+    </head>
+
+<body>
+<form action="/upload" method="POST" enctype="multipart/form-data">
+    Select document to upload:
+    <input type="file" name="inputFile">
+    <input type="submit" name="submit">
+</form>
+
+<form action="/uploadmedia" method="POST" enctype="multipart/form-data">
+    Select media to upload:
+    <input type="file" name="secondFile">
+    <input type="submit" name="submit">
+</form>
+
+</body>
+
+</html>
