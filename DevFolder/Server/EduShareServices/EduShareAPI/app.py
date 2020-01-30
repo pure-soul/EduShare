@@ -65,6 +65,22 @@ def login(username, password):
     l = requests.post(login_url, json = {'username':username,'password':password})
     return l.json() #redirect(login_url, code=302)
 
+@app.route('/edushare/api/v1.0/login', methods = ['GET','POST'])
+def login_2():
+    if not request.json:
+        abort(400)
+    
+    cipher = encrypt_with_AES(request.json['password'], secret_key, salt)
+    print("Cipher: " + cipher)
+
+    decrypted = decrypt_with_AES(cipher, secret_key, salt)
+    print("Decrypted " + decrypted)
+    # request.json['password'] = decrypted
+
+    login_url = 'http://0.0.0.0:8000/login' #+ username + '/' + password
+    l = requests.post(login_url, json = request.json)
+    return l.json() #redirect(login_url, code=302)
+
 @app.route('/edushare/api/v1.0/register/<username>/<password>/<email>/<role>/<review>/<name>', methods=['GET', 'POST'])
 def register(username, password, email, role, review, name):
     register_url = 'http://0.0.0.0:8000/register' # + username + '/' + password + '/' + email + '/' + role + '/' + review
