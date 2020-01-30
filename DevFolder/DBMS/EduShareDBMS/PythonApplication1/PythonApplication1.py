@@ -24,6 +24,8 @@ def index():
 
 @app.route('/upload', methods=['GET','POST'])
 def upload():
+    if not request.files:
+        abort(400)
     f = request.files['inputFile']
     file_name = f.filename
     file_file = f.read()
@@ -37,6 +39,8 @@ def upload():
 
 @app.route('/uploadmedia', methods=['GET','POST'])
 def uploadmedia():
+    if not request.files:
+        abort(400)
     f = request.files['secondFile']
     file_name = f.filename
     file_file = f.read()
@@ -67,7 +71,11 @@ def error():
 
 @app.errorhandler(500)
 def denied(error):
-    return make_response(jsonify({"error":"The task could not be completed at this time"}))
+    return make_response(jsonify({"error":"(500) The task could not be completed at this time"}))
+
+@app.errorhandler(400)
+def invalid_upload(error):
+    return make_response(jsonify({"error":"(400) Bad Request"}))
 
 @app.route('/register', methods=['POST'])
 def register():
