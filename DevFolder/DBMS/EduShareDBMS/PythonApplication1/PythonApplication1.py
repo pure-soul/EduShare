@@ -38,11 +38,7 @@ def error():
 def denied(error):
     return make_response(jsonify({"error":"The task could not be completed at this time"}))
 
-<<<<<<< HEAD
 @app.route('/register', methods=['POST'])
-=======
-@app.route('/register', methods=['GET','POST'])
->>>>>>> 0936e3f4dbfc2a34dcb90c83bcbc2a3ee9f6c03b
 def register():
     if not request.json:
         abort(400)
