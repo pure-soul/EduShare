@@ -62,7 +62,7 @@ def login():
     mycursor.execute(query, (username,password))
     user = mycursor.fetchone()
     if user == "":
-        return error()
+        abort(404)
     else:
         return jsonify(user)
 
@@ -71,11 +71,15 @@ def error():
 
 @app.errorhandler(500)
 def denied(error):
-    return make_response(jsonify({"error":"(500) The task could not be completed at this time"}))
+    return make_response(jsonify({"error":"The task could not be completed at this time",'code':500}),500)
 
 @app.errorhandler(400)
 def invalid_upload(error):
-    return make_response(jsonify({"error":"(400) Bad Request"}))
+    return make_response(jsonify({"error":"Bad Request",'code':400}), 400)
+
+@app.errorhandler(404)
+def not_found(error):
+    return make_response(jsonify({'error': 'Not Found','code':404}), 404)
 
 @app.route('/register', methods=['POST'])
 def register():
@@ -120,7 +124,7 @@ def register():
         mycursor.execute(query,(fetchedid,fetchedrole,c,r,v,e,u)) 
         
         mysql.connection.commit()
-    except (MySQLdb.Error, MySQLdb.Warning) as e:
+    except (MySQLdb.Error, MySQLdb.Warning, KeyError) as e:
         e=str(e)
         return jsonify({"error":e})
 

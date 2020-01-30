@@ -61,24 +61,16 @@ def login(username, password):
     decrypted = decrypt_with_AES(cipher, secret_key, salt)
     print("Decrypted " + decrypted)
 
-    login_url = 'http://0.0.0.0:8000/~/' + username + '/' + password
-    l = requests.get(login_url)
+    login_url = 'http://0.0.0.0:8000/login' #+ username + '/' + password
+    l = requests.post(login_url, json = {'username':username,'password':password})
     return l.json() #redirect(login_url, code=302)
 
 @app.route('/edushare/api/v1.0/register/<username>/<password>/<email>/<role>/<review>/<name>', methods=['GET', 'POST'])
 def register(username, password, email, role, review, name):
     register_url = 'http://0.0.0.0:8000/register' # + username + '/' + password + '/' + email + '/' + role + '/' + review
-    s = requests.post(register_url, data = {'username':username,'password':password,'role':role,'review':review,'name':name})
-    # s = requests.get(register_url)
-    if s.ok:
-        print(s)
-        return s.json() #redirect(register_url, code=302)
-    abort(400)
-    # try:
-    #     print(s)
-    #     return s.json() #redirect(register_url, code=302)
-    # except TypeError,e:
-    #     abort(400)
+    s = requests.post(register_url, json = {'username':username,'password':password,'email':email,'role':role,'review':review,'name':name})
+    print(s)
+    return s.json()
 
 def get_items_with(string):
     item = [item for item in items if string in item['tags']]
