@@ -7,11 +7,15 @@ Thursday, January 19, 2020 - Started pushing python files to docker for easier r
 
 docker build -t edusharedb .
 docker login
-docker tag edusharedb dmss/edushare:db_version1
-docker push dmss/edushare:db_version1
+docker tag edusharedb dmss/edushare:<tag>
+docker push dmss/edushare:<tag>
 
 Running image:
 docker run -p 8000:8000 edusharedb
 
 Pulling image:
-docker image pull [OPTIONS] dmss/edushare:db_version1
+docker image pull [OPTIONS] dmss/edushare:<tag>
+
+tags:
+db_version1
+db_version2

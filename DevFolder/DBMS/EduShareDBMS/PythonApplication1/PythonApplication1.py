@@ -58,13 +58,20 @@ def login():
     username = request.json['username']
     password = request.json['password']
     mycursor = mysql.connection.cursor()
-    query = "SELECT login_name, login_email FROM login WHERE login_name=%s AND login_password=sha1(%s)"
-    mycursor.execute(query, (username,password))
-    user = mycursor.fetchone()
-    if user == "":
-        abort(404)
+    query_u = "SELECT login_name, login_email FROM login WHERE login_name=%s"
+    query_p = "SELECT login_name, login_email FROM login WHERE login_password=sha1(%s)"
+    mycursor.execute(query_p, (password))
+    user_p = mycursor.fetchone()
+    mycursor.execute(query_u, (username))
+    user_u = mycursor.fetchone()
+    if user_u == "":
+        return jsonify({'error':'user does not exist'})
+    if user_p == "":
+        return jsonify({'error':'incorrect password'})
+    if user_u == user_p:
+        return jsonify(user_p)
     else:
-        return jsonify(user)
+        abort(400)
 
 def error():
     return jsonify({'error':'something went wrong'})
