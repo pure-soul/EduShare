@@ -55,23 +55,30 @@ def uploadmedia():
 def login():
     if not request.json:
         abort(400)
-    username = request.json['username']
-    password = request.json['password']
-    mycursor = mysql.connection.cursor()
-    query_u = "SELECT login_name, login_email FROM login WHERE login_name=%s"
-    query_p = "SELECT login_name, login_email FROM login WHERE login_password=sha1(%s)"
-    mycursor.execute(query_p, (password))
-    user_p = mycursor.fetchone()
-    mycursor.execute(query_u, (username))
-    user_u = mycursor.fetchone()
-    if user_u == "":
-        return jsonify({'error':'user does not exist'})
-    if user_p == "":
-        return jsonify({'error':'incorrect password'})
-    if user_u == user_p:
-        return jsonify(user_p)
-    else:
-        abort(400)
+    try:
+        username = request.json['username']
+        password = request.json['password']
+        if is_valid_username(username):
+            print('valid username')
+            if is_valid_password(password):
+                print('valid password')
+            else:
+                print('invalid password')
+                # return jsonify({'error':'incorrect password'})
+        else:
+            print('invalid username')
+            # return jsonify({'error':'user does not exist'})
+        mycursor = mysql.connection.cursor()
+        query = "SELECT login_name, login_email FROM login WHERE login_name=%s AND login_password=sha1(%s)"
+        mycursor.execute(query, (username,password))
+        user = mycursor.fetchone()
+        if user == None:
+            return jsonify({'error':'please check login information'})
+        else:
+            return jsonify(user)
+    except (MySQLdb.Error, MySQLdb.Warning, KeyError) as e:
+        print('aborting')
+        return jsonify({'error':str(e),'type': type(e).__name__})
 
 def error():
     return jsonify({'error':'something went wrong'})
@@ -136,6 +143,34 @@ def register():
         return jsonify({"error":e})
 
     return jsonify({'Registration':'Successful'})
+
+def is_valid_username(username):
+    try:
+        mycursor = mysql.connection.cursor()
+        query = "SELECT login_name, login_email FROM login  WHERE login_name=%s"
+        mycursor.execute(query, (username))
+        user = mycursor.fetchone()
+        print('Valid Username: ' + str(user))
+        if user == None:
+            return False
+        else:
+            return True
+    except (MySQLdb.Error, MySQLdb.Warning, KeyError) as e:
+        return jsonify({'error':str(e),'type': type(e).__name__})
+
+def is_valid_password(password):
+    try:
+        mycursor = mysql.connection.cursor()
+        query = "SELECT login_name, login_email FROM login WHERE login_password=sha1(%s)"
+        mycursor.execute(query, (password))
+        user = mycursor.fetchone()
+        print('Valid Password: ' + str(user))
+        if user == None:
+            return False
+        else:
+            return True
+    except (MySQLdb.Error, MySQLdb.Warning, KeyError) as e:
+        return jsonify({'error':str(e),'type': type(e).__name__})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8000)
