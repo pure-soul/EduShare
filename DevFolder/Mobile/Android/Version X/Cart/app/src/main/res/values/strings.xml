@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Shop</string>
+    <string name="nav_open">Open navigation Drawer</string>
+    <string name="nav_close">Close navigation Drawer</string>
+    <string name="locate">Locate</string>
+    <string name="search">Search</string>
+    <string name="share">Share</string>
+    <string name="shop">Shop</string>
+    <string name="cart">Cart</string>
+    <string name="action_setting">action_settings</string>
+    <string name="todo">splash</string>
+    <string name="username">User Name</string>
+    <string name="password">Password</string>
+    <string name="login">LOGIN</string>
+    <string name="register">REGISTER</string>
+    <string name="not_registered">Not Registered</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="already_registered">Already Registered</string>
+    <string name="delete">DELETE</string>
+    <string name="product">name of product</string>
+    <string name="type">type of product</string>
+    <string name="brand">brand</string>
+    <string name="init">1</string>
+
+</resources>
