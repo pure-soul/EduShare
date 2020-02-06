@@ -20,10 +20,10 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
         this.mContext = context;
     }
 
-    private static String ADDTOCART = "addToCart", PLUS = "add1ToQuantity", MINUS = "subtract1FromQuantity";
+    private static String ADDTOLIBRARY = "addToCart";
 
     private ArrayList<Item> mshoppingList = new ArrayList<>();
-    String ATAG = "SupermercadoADAPTER";
+    String ATAG = "EduShareADAPTER";
     private Context mContext;
 
     @NonNull
@@ -39,10 +39,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
         final Item currentItem = mshoppingList.get(i);
         searchViewHolder.mTextView1.setText(currentItem.getName());
         searchViewHolder.mTextView2.setText(currentItem.getContent());
-        searchViewHolder.mQuantity.setText(Integer.toString(currentItem.getQuantity()));
-        searchViewHolder.add.setOnClickListener(new MyOnClickListener(i, ADDTOCART));
-        searchViewHolder.mAdd.setOnClickListener(new MyOnClickListener(i, PLUS));
-        searchViewHolder.mMinus.setOnClickListener(new MyOnClickListener(i, MINUS));
+        searchViewHolder.add.setOnClickListener(new MyOnClickListener(i, ADDTOLIBRARY));
     }
 
     @Override
@@ -55,17 +52,14 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
 
     public class SearchViewHolder extends RecyclerView.ViewHolder {
 
-        private Button mAdd, mMinus, add;
-        private TextView mTextView1, mTextView2, mQuantity;
+        private Button add;
+        private TextView mTextView1, mTextView2;
 
         public SearchViewHolder(@NonNull View itemView) {
             super(itemView);
 
             mTextView1 = itemView.findViewById(R.id.tv1);
             mTextView2 = itemView.findViewById(R.id.tv2);
-            mQuantity = itemView.findViewById(R.id.tvQuantity);
-            mAdd = itemView.findViewById(R.id.btnAdd);
-            mMinus = itemView.findViewById(R.id.btnMinus);
             add = itemView.findViewById(R.id.addToCart);
         }
     }
@@ -82,42 +76,21 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
         private String oAction;
         private int mPosition;
         private Item mItem;
-        private int mQuan;
 
-        public MyOnClickListener(int position, String action){oAction = action; mPosition = position; mItem = mshoppingList.get(mPosition); mQuan = mItem.getQuantity(); }
+        public MyOnClickListener(int position, String action){oAction = action; mPosition = position; mItem = mshoppingList.get(mPosition);}
 
         @Override
         public void onClick(View v) {
 
-            if (oAction == ADDTOCART){
-                addToCart(mshoppingList.get(mPosition));
-                mItem.setQuantity(1);
-                mshoppingList.set(mPosition, mItem);
-                Toast.makeText(mContext, Integer.toString(mQuan) + " " +mshoppingList.get(mPosition).getName() + " added to cart", Toast.LENGTH_SHORT).show();
-            }
-            if (oAction == PLUS) {
-                if (mQuan != mItem.getAmount()){
-                    Log.i(ATAG, "Quan = " +Integer.toString(mQuan));
-                    mQuan++;
-                    Log.i(ATAG, "Quan = " +Integer.toString(mQuan));
-                    //mItem.addOne();
-                    mItem.setQuantity(mQuan);
-                    mshoppingList.set(mPosition, mItem);
-                }
-            }
-            if (oAction == MINUS){
-                if (mQuan != 1){
-                    mQuan--;
-                    //mItem.minusOne();
-                    mItem.setQuantity(mQuan);
-                    mshoppingList.set(mPosition,mItem);
-                }
+            if (oAction == ADDTOLIBRARY){
+                //addToLibrary(mItem); <--needs fixing
+                Toast.makeText(mContext, mItem.getName() + " added to Libtrary", Toast.LENGTH_SHORT).show();
             }
 
             notifyDataSetChanged();
         }
 
-        public void addToCart(Item item){
+        public void addToLibrary(Item item){
             UpdateCart.get(mContext).addItem(item);
         }
 

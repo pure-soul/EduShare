@@ -116,24 +116,12 @@ public class SearchFragment extends Fragment {
                     Log.i(JTAG, searchItem.toString());
                     item.setName(searchItem.getString("title"));
                     Log.i(JTAG, searchItem.getString("title"));
-                    float cost = 0; // <--added
-                    int isle = 1; // <--added
-                    item.setCost(cost); // <--added
-                    item.setIsleNum(isle); // <--added
-//                    item.setCost((float) searchItem.getDouble("cost")); <-- commented
-//                    Log.i(JTAG, searchItem.getString("cost")); <--commented
-                    item.setAmount(searchItem.getInt("quantity"));
-                    Log.i(JTAG, searchItem.getString("quantity"));
-                    item.setCost((float) searchItem.getDouble("price"));
-                    Log.i(JTAG, searchItem.getString("price"));
-                    item.setImageURL(searchItem.getString("image"));
-                    Log.i(JTAG, searchItem.getString("image"));
+                    item.setImageURL(searchItem.getString("link"));
+                    Log.i(JTAG, searchItem.getString("link"));
                     item.setID(searchItem.getString("id"));
                     Log.i(JTAG, searchItem.getString("id"));
                     item.setContent(searchItem.getString("content"));
                     Log.i(JTAG, searchItem.getString("content"));
-//                    item.setIsleNum(searchItem.getInt("isle_no")); <-- commented
-//                    Log.i(JTAG, searchItem.getString("isle_no")); <--commented
                     Log.i(JTAG, item.toString());
                     this.RESULTS.add(item);
                     Log.i(JTAG, RESULTS.toString());
