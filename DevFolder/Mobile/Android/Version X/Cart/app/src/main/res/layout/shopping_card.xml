@@ -14,17 +14,17 @@
         android:layout_height="wrap_content">
 
         <!--<ImageView-->
-            <!--android:id="@+id/imageView"-->
-            <!--android:layout_width="69dp"-->
-            <!--android:layout_height="80dp"-->
-            <!--android:layout_alignParentStart="true"-->
-            <!--android:layout_alignParentLeft="true"-->
-            <!--android:layout_alignParentTop="true"-->
-            <!--android:layout_gravity="start"-->
-            <!--android:layout_marginStart="6dp"-->
-            <!--android:layout_marginLeft="6dp"-->
-            <!--android:layout_marginTop="3dp"-->
-            <!--android:padding="2dp" />-->
+        <!--android:id="@+id/imageView"-->
+        <!--android:layout_width="69dp"-->
+        <!--android:layout_height="80dp"-->
+        <!--android:layout_alignParentStart="true"-->
+        <!--android:layout_alignParentLeft="true"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:layout_gravity="start"-->
+        <!--android:layout_marginStart="6dp"-->
+        <!--android:layout_marginLeft="6dp"-->
+        <!--android:layout_marginTop="3dp"-->
+        <!--android:padding="2dp" />-->
 
 
         <TextView
@@ -49,61 +49,21 @@
             android:layout_alignParentTop="true"
             android:layout_marginStart="5dp"
             android:layout_marginLeft="5dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="38dp"
             android:text="@string/type"
             android:textSize="20sp" />
 
-
-        <TextView
-            android:id="@+id/tvQuantity"
-            android:layout_width="30dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="57dp"
-            android:layout_marginEnd="0dp"
-            android:layout_marginRight="0dp"
-            android:layout_toStartOf="@+id/btnAdd"
-            android:layout_toLeftOf="@+id/btnAdd"
-            android:gravity="center"
-            android:text="@string/init"
-            android:textStyle="bold" />
-
         <Button
-            android:id="@+id/btnMinus"
-            android:layout_width="24dp"
-            android:layout_height="21dp"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="57dp"
-            android:layout_marginEnd="0dp"
-            android:layout_marginRight="0dp"
-            android:layout_marginBottom="3dp"
-            android:layout_toStartOf="@+id/tvQuantity"
-            android:layout_toLeftOf="@+id/tvQuantity"
-            android:background="@drawable/sub" />
-
-        <Button
-            android:id="@+id/btnAdd"
-            android:layout_width="23dp"
-            android:layout_height="20dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="56dp"
-            android:layout_marginEnd="17dp"
-            android:layout_marginRight="17dp"
-            android:background="@drawable/add" />
-
-        <Button
-            android:id="@+id/addToCart"
+            android:id="@+id/addToLibrary"
             android:layout_width="28dp"
             android:layout_height="31dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="41dp"
-            android:layout_marginRight="41dp"
-            android:background="@drawable/shoppingcart" />
+            android:layout_marginTop="13dp"
+            android:layout_marginEnd="13dp"
+            android:layout_marginRight="13dp"
+            android:background="@drawable/add" />
 
     </RelativeLayout>
 

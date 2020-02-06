@@ -61,9 +61,6 @@ public class ShoppingAdapter extends RecyclerView.Adapter<ShoppingAdapter.Shoppi
             //mImageView = itemView.findViewById(R.id.imageView);
             mTextView1 = itemView.findViewById(R.id.tv1);
             mTextView2 = itemView.findViewById(R.id.tv2);
-            mQuantity = itemView.findViewById(R.id.tvQuantity);
-            mAdd = itemView.findViewById(R.id.btnAdd);
-            mMinus = itemView.findViewById(R.id.btnMinus);
 
             mAdd.setOnClickListener(new View.OnClickListener() {
                 @Override

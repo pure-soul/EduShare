@@ -60,7 +60,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
 
             mTextView1 = itemView.findViewById(R.id.tv1);
             mTextView2 = itemView.findViewById(R.id.tv2);
-            add = itemView.findViewById(R.id.addToCart);
+            add = itemView.findViewById(R.id.addToLibrary);
         }
     }
 
