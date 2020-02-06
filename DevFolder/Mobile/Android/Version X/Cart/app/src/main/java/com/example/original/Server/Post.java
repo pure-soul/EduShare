@@ -40,7 +40,6 @@ public class Post extends AsyncTask<ArrayList<Item>, Void, Void> {
                 postobject = new JSONObject();
                 postobject.put("id", item.getID());
                 postobject.put("title", item.getName());
-                postobject.put("quantity", item.getQuantity());
                 Log.i("JSON", postobject.toString());
                 DataOutputStream post = new DataOutputStream(connection.getOutputStream());
                 post.writeBytes(postobject.toString());

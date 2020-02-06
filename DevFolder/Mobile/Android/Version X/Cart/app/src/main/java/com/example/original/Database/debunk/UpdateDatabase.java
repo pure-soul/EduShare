@@ -86,11 +86,8 @@ public class UpdateDatabase {
         values.put(ItemSchema.Item.Col.ITEM, item.getName());
         //values.put(ItemSchema.Item.Col.CONTENT, item.getContent());
         values.put(ItemSchema.Item.Col.CONTENT, "FUQERY");//for testing
-        values.put(ItemSchema.Item.Col.COST, item.getCost());
         //values.put(ItemSchema.Item.Col.QUANTITY, item.getQuantity());
-        values.put(ItemSchema.Item.Col.QUANTITY, "100");//for testing
         //values.put(ItemSchema.Item.Col.ISLE_NUM, item.getIsleNum());
-        values.put(ItemSchema.Item.Col.ISLE_NUM, "10");// for testing
         values.put(ItemSchema.Item.Col.IMAGE, item.getiImageURL());
         return values;
     }

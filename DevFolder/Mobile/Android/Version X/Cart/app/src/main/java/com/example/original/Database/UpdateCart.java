@@ -89,8 +89,6 @@ public class UpdateCart {
         values.put(ItemSchema.Item.Col.ITEMID, item.getID());
         values.put(ItemSchema.Item.Col.ITEM, item.getName());
         values.put(ItemSchema.Item.Col.CONTENT, item.getContent());
-        values.put(ItemSchema.Item.Col.COST, item.getCost());
-        values.put(ItemSchema.Item.Col.QUANTITY, item.getQuantity());
         values.put(ItemSchema.Item.Col.IMAGE, item.getiImageURL());
         return values;
     }

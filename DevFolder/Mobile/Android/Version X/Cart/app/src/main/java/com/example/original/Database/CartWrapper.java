@@ -26,9 +26,7 @@ public class CartWrapper extends CursorWrapper {
         item.setID(item_id);
         item.setName(item_name);
         item.setContent(content);
-        item.setCost(Float.parseFloat(cost));
         item.setImageURL(image);
-        item.setQuantity(Integer.parseInt(quantity));
 
         return item;
     }

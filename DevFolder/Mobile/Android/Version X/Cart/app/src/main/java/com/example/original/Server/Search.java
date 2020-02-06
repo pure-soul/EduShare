@@ -56,18 +56,12 @@ public class Search extends AsyncTask<Void, String, ArrayList<Item>> {
                 Log.i(JTAG, searchItem.toString());
                 item.setName(searchItem.getString("title"));
                 Log.i(JTAG, searchItem.getString("title"));
-                item.setCost((float) searchItem.getDouble("price"));
-                Log.i(JTAG, searchItem.getString("price"));
                 item.setImageURL(searchItem.getString("image"));
                 Log.i(JTAG, searchItem.getString("image"));
                 item.setID(searchItem.getString("id"));
                 Log.i(JTAG, searchItem.getString("id"));
                 item.setContent(searchItem.getString("content"));
                 Log.i(JTAG, searchItem.getString("content"));
-                item.setAmount(searchItem.getInt("quantity"));
-                Log.i(JTAG, searchItem.getString("quantity"));
-                item.setIsleNum(searchItem.getInt("isle_no"));
-                Log.i(JTAG, searchItem.getString("isle_no"));
                 Log.i(JTAG, item.toString());
                 list.add(item);
                 Log.i(JTAG, list.toString());

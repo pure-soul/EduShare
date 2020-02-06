@@ -12,20 +12,16 @@ public class Item {
     private String iContent;
     private String iURL;
 
-    public Item(String id, String name, String content, float cost) {
+    public Item() {
+    }
+
+    public Item(String id, String name, String content) {
         iID = id;
         iName = name;
         iContent = content;
     }
 
-    public Item(String id, String name, String content, float cost, String image) {
-        iID = id;
-        iName = name;
-        iContent = content;
-        iURL = image;
-    }
-
-    public Item(String id, String name, String content, float cost, String image, int quan, int isle_num) {
+    public Item(String id, String name, String content, String image) {
         iID = id;
         iName = name;
         iContent = content;

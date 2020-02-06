@@ -79,21 +79,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         new SearchFragment()).commit();
                 break;
 
-            case R.id.nav_locate:
-                setTitle(R.string.locate);
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new LocateFragment()).commit();
-                break;
+//            case R.id.nav_locate:
+//                setTitle(R.string.locate);
+//                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+//                        new LocateFragment()).commit();
+//                break;
             case R.id.nav_profile:
                 setTitle(Profile.getName());
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new ProfileFragment()).commit();
                 break;
-            case R.id.nav_cart:
-                setTitle(R.string.cart);
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new CartFragment()).commit();
-                break;
+//            case R.id.nav_cart:
+//                setTitle(R.string.cart);
+//                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+//                        new CartFragment()).commit();
+//                break;
             case R.id.nav_share:
                 setTitle(R.string.share);
                 sharePage();

@@ -20,7 +20,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
         this.mContext = context;
     }
 
-    private static String ADDTOLIBRARY = "addToCart";
+    private static String ADDTOLIBRARY = "addToLibrary";
 
     private ArrayList<Item> mshoppingList = new ArrayList<>();
     String ATAG = "EduShareADAPTER";
