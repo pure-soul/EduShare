@@ -92,6 +92,7 @@ def login_():
         # request.json['password'] = decrypted
 
         login_url = 'http://0.0.0.0:8000/login'
+        # login_url = 'http://localhost:8000/login'
         l = requests.post(login_url, json = request.json)
         return l.json() #redirect(login_url, code=302)
     except TypeError:
