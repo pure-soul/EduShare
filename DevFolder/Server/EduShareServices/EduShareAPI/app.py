@@ -71,7 +71,7 @@ def login(username, password):
         print("Cipher: " + cipher)
 
         decrypted = decrypt_with_AES(cipher, secret_key, salt)
-        print("Decrypted " + decrypted)
+        print("Decrypted: " + decrypted)
 
         login_url = 'http://0.0.0.0:8000/login' #+ username + '/' + password
         l = requests.post(login_url, json = {'username':username,'password':password})
