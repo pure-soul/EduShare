@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorAccent"
+    android:orientation="vertical"
+    android:padding="4dp">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="170dp"
+        android:src="@drawable/supermercado"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginStart="4dp"
+        android:layout_marginLeft="4dp">
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="User name"
+                android:textStyle="bold"
+                android:textSize="30dp"
+                android:padding="3dp"/>
+
+            <TextView
+                android:id="@+id/email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="User email"
+                android:layout_marginTop="15dp"
+                android:textSize="30dp"
+                android:textStyle="bold"
+                android:padding="3dp"/>
+
+
+
+
+    <TextView
+        android:id="@+id/transaction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Transactions"
+        android:textSize="30dp"
+        android:padding="3dp"
+        android:textStyle="bold"
+        android:layout_marginTop="50dp"/>
+
+    <TextView
+        android:id="@+id/blog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="blog"
+        android:textSize="30dp"
+        android:padding="3dp"
+        android:textStyle="bold"
+        android:layout_marginTop="15dp"/>
+
+
+    <Button
+        android:id="@+id/log_out"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:padding="3dp"
+        android:layout_marginTop="15dp"
+        android:text="Log out" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

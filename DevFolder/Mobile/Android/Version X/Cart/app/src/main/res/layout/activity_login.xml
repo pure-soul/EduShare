@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LoginActivity"
+    android:orientation="vertical"
+    android:background="@color/colorAccent"
+    android:gravity="center_horizontal">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:src="@drawable/supermarket_vector"/>
+
+    <EditText
+        android:id="@+id/tvuser_name"
+        android:layout_width="250dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginBottom="5dp"
+        android:background="@color/white"
+        android:inputType="text"
+        android:singleLine="true"
+        android:drawableLeft="@drawable/user"
+        android:hint="@string/username"/>
+
+
+
+
+        <EditText
+            android:id="@+id/pass_word"
+            android:layout_width="250dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center"
+            android:background="@color/white"
+            android:drawableLeft="@drawable/password"
+            android:inputType="textPassword"
+            android:layout_marginTop="20dp"
+            android:hint="@string/password"/>
+
+
+    <ProgressBar
+        android:id="@+id/loading"
+        android:layout_marginTop="35dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
+
+    <Button
+        android:id="@+id/submit_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/login"
+        android:layout_gravity="center"/>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:textColor="@color/white"
+            android:text="@string/not_registered"/>
+
+
+        <TextView
+            android:id="@+id/register"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:padding="10dp"
+            android:textColor="#04ea00"
+            android:textStyle="bold"
+            android:text="@string/register"/>
+
+    </LinearLayout>
+
+</LinearLayout>

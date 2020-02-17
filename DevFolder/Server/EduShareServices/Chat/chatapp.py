@@ -7,6 +7,7 @@ import time
 from flask import Flask, render_template
 import socketio
 
+
 user_sid = ''
 my_ip = '45.56.155.177'
 
@@ -16,6 +17,7 @@ app.wsgi_app = socketio.WSGIApp(sio, app.wsgi_app)
 app.config['SECRET_KEY'] = 'neVEraSkeDaNIgGaFOsh!T,ThATiSSAfetOsAy!'
 thread = None
 
+async_mode = 'eventlet'
 
 def background_thread():
     """Example of how to send server generated events to clients."""
@@ -91,7 +93,7 @@ def disconnect_request(sid):
 
 @sio.event
 def connect(sid, environ):
-    sio.emit('edushare_response', {'data': 'Connected', 'count': 0}, room=sid)
+    sio.emit('edushare_response', {'data': 'Connected', 'count': 0, 'sender':'edushare_chat'}, room=sid)
 
 
 @sio.event
@@ -113,15 +115,15 @@ def handle_message(sid, data):
     sio.emit("edushare_response", {'sender': sid, 'data': data['data']}, room=data['room'])
 
 if __name__ == '__main__':
-    if sio.async_mode == 'threading':
+    if async_mode == 'threading':
         # deploy with Werkzeug
         app.run(threaded=True, host='0.0.0.0', port=50)
-    elif sio.async_mode == 'eventlet':
+    elif async_mode == 'eventlet':
         # deploy with eventlet
         import eventlet
         import eventlet.wsgi
         eventlet.wsgi.server(eventlet.listen(('0.0.0.0', 50)), app)
-    elif sio.async_mode == 'gevent':
+    elif async_mode == 'gevent':
         # deploy with gevent
         from gevent import pywsgi
         try:
@@ -134,7 +136,7 @@ if __name__ == '__main__':
                               handler_class=WebSocketHandler).serve_forever()
         else:
             pywsgi.WSGIServer(('0.0.0.0', 50), app).serve_forever()
-    elif sio.async_mode == 'gevent_uwsgi':
+    elif async_mode == 'gevent_uwsgi':
         print('Start the application through the uwsgi server. Example:')
         print('uwsgi --http :5000 --gevent 1000 --http-websockets --master '
               '--wsgi-file app.py --callable app')

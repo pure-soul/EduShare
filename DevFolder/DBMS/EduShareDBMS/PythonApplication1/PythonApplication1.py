@@ -58,16 +58,14 @@ def login():
     try:
         username = request.json['username']
         password = request.json['password']
-        if is_valid_username(username):
-            print('valid username')
-            if is_valid_password(password):
-                print('valid password')
-            else:
-                print('invalid password')
-                # return jsonify({'error':'incorrect password'})
-        else:
+        if not is_valid_username(username):
             print('invalid username')
-            # return jsonify({'error':'user does not exist'})
+            return jsonify({'error':'user does not exist'})
+            
+        if not is_valid_password(password):
+            print('invalid password')
+            return jsonify({'error':'incorrect password'})
+            
         mycursor = mysql.connection.cursor()
         query = "SELECT login_name, login_email FROM login WHERE login_name=%s AND login_password=sha1(%s)"
         mycursor.execute(query, (username,password))
@@ -148,7 +146,7 @@ def is_valid_username(username):
     try:
         mycursor = mysql.connection.cursor()
         query = "SELECT login_name, login_email FROM login  WHERE login_name=%s"
-        mycursor.execute(query, (username))
+        mycursor.execute(query, username)
         user = mycursor.fetchone()
         print('Valid Username: ' + str(user))
         if user == None:
@@ -162,7 +160,7 @@ def is_valid_password(password):
     try:
         mycursor = mysql.connection.cursor()
         query = "SELECT login_name, login_email FROM login WHERE login_password=sha1(%s)"
-        mycursor.execute(query, (password))
+        mycursor.execute(query, password)
         user = mycursor.fetchone()
         print('Valid Password: ' + str(user))
         if user == None:
