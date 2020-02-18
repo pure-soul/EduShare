@@ -1,11 +1,15 @@
-from flask import Flask, jsonify, make_response, request, redirect, url_for, abort, render_template
+from flask import Flask, jsonify, make_response, request, redirect, url_for, abort, render_template, Response
 from flask_mysqldb import MySQL
 import MySQLdb
 from werkzeug.urls import url_parse
 from werkzeug.security import generate_password_hash, check_password_hash
 from urllib.parse import unquote
 import pdb
+from flask_bootstrap import Bootstrap
+import boto3
+from config import S3_BUCKET, S3_KEY, S3_SECRET
 
+s3=boto3.client('s3',aws_access_key_id=S3_KEY, aws_secret_access_key=S3_SECRET)
 app = Flask(__name__)
 
 app.config['MYSQL_HOST'] = "bm8hz3h5flr23o71hqco-mysql.services.clever-cloud.com"
@@ -14,16 +18,63 @@ app.config['MYSQL_PASSWORD'] = "bQDFy45cP2SlZItMHxqU"
 app.config['MYSQL_DB'] = "bm8hz3h5flr23o71hqco"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
-# app.config['DEBUG'] = True
+app.config['DEBUG'] = True
 
+Bootstrap(app)
 mysql = MySQL(app)
 
 @app.route('/')
 def index():
-    return render_template('form.html')
+    return render_template('index.html')
 
-@app.route('/upload', methods=['GET','POST'])
+@app.route('/files')
+def files():
+    s3_resource=boto3.resource('s3')
+    my_bucket=s3_resource.Bucket(S3_BUCKET)
+    summaries = my_bucket.objects.all()
+    return render_template('files.html',my_bucket=my_bucket,files=summaries) 
+
+@app.route('/upload', methods=['POST'])
 def upload():
+    file = request.files['file']
+    s3_resource=boto3.resource('s3')
+    my_bucket=s3_resource.Bucket(S3_BUCKET)
+    my_bucket.Object(file.filename).put(Body=file)
+    return redirect(url_for("files"))
+
+@app.route('/download', methods=['POST'])
+def download():
+    key = request.form['key']
+    s3_resource = boto3.resource('s3')
+    my_bucket=s3_resource.Bucket(S3_BUCKET)
+    file_obj = my_bucket.Object(key).get()
+    return Response(
+        file_obj['Body'].read(),
+        mimetype='text/plain',
+        headers={"Content-Disposition":"attachment;filename={}".format(key)}
+    )
+
+@app.route('/documentsearch',methods=['GET','POST'])
+def document_search():
+    if not request.json:
+        abort(400)
+    return True
+
+@app.route('/search/<item>',methods=['GET','POST'])
+def search(item):
+    mycursor = mysql.connection.cursor()
+    mycursor.execute("SELECT * FROM documents WHERE document_tags LIKE %s ", ("%" + item + "%",))
+    #mycursor.execute(query)
+    document_result = mycursor.fetchall()
+    mycursor = mysql.connection.cursor()
+    mycursor.execute("SELECT * FROM media WHERE media_tags LIKE %s ", ("%" + item + "%",))
+    #mycursor.execute(query)
+    media_result = mycursor.fetchall()
+    return jsonify({'Documents':document_result, 'Media':media_result})
+
+
+@app.route('/uploads', methods=['GET','POST'])
+def uploads():
     if not request.files:
         abort(400)
     f = request.files['inputFile']
@@ -171,4 +222,4 @@ def is_valid_password(password):
         return jsonify({'error':str(e),'type': type(e).__name__})
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8000)
+    app.run(host='127.0.0.1', port=8000)
