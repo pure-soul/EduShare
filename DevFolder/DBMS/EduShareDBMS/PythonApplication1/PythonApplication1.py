@@ -44,7 +44,11 @@ def upload():
 
 @app.route('/download', methods=['POST'])
 def download():
+    # if not request.json:
+    #     abort(400)
+    # try:
     key = request.form['key']
+    # key = request.json['key']
     s3_resource = boto3.resource('s3')
     my_bucket=s3_resource.Bucket(S3_BUCKET)
     file_obj = my_bucket.Object(key).get()
@@ -53,6 +57,8 @@ def download():
         mimetype='text/plain',
         headers={"Content-Disposition":"attachment;filename={}".format(key)}
     )
+    # except (MySQLdb.Error, MySQLdb.Warning, KeyError) as e:
+    #     return jsonify({'error':str(e),'type': type(e).__name__})
 
 @app.route('/documentsearch',methods=['GET','POST'])
 def document_search():
@@ -60,18 +66,23 @@ def document_search():
         abort(400)
     return True
 
-@app.route('/search/<item>',methods=['GET','POST'])
-def search(item):
-    mycursor = mysql.connection.cursor()
-    mycursor.execute("SELECT * FROM documents WHERE document_tags LIKE %s ", ("%" + item + "%",))
-    #mycursor.execute(query)
-    document_result = mycursor.fetchall()
-    mycursor = mysql.connection.cursor()
-    mycursor.execute("SELECT * FROM media WHERE media_tags LIKE %s ", ("%" + item + "%",))
-    #mycursor.execute(query)
-    media_result = mycursor.fetchall()
-    return jsonify({'Documents':document_result, 'Media':media_result})
-
+@app.route('/search',methods=['GET','POST'])
+def search():
+    if not request.json:
+        abort(400)
+    try:
+        item = request.json["search"]
+        mycursor = mysql.connection.cursor()
+        mycursor.execute("SELECT * FROM documents WHERE document_tags LIKE %s ", ("%" + item + "%",))
+        #mycursor.execute(query)
+        document_result = mycursor.fetchall()
+        mycursor = mysql.connection.cursor()
+        mycursor.execute("SELECT * FROM media WHERE media_tags LIKE %s ", ("%" + item + "%",))
+        #mycursor.execute(query)
+        media_result = mycursor.fetchall()
+        return jsonify({'Documents':document_result, 'Media':media_result})
+    except (MySQLdb.Error, MySQLdb.Warning, KeyError) as e:
+        return jsonify({'error':str(e),'type': type(e).__name__})
 
 @app.route('/uploads', methods=['GET','POST'])
 def uploads():
@@ -222,4 +233,4 @@ def is_valid_password(password):
         return jsonify({'error':str(e),'type': type(e).__name__})
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=8000)
+    app.run(host='0.0.0.0', port=8000)

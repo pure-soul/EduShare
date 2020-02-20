@@ -12,28 +12,46 @@ app = Flask(__name__, template_folder='Forms')
 # Make the WSGI interface available at the top level so wfastcgi can get it.
 wsgi_app = app.wsgi_app
 
-#Server Ports
+#Server Ports/Routes
 
+###
+# Sample Api Search HTML page
 @app.route('/')
 def hello():
     """Renders a sample page."""
     return render_template('home.html')
-    #return "Welcome to Edushare!"
 
+###
+# Search Routes
 @app.route('/edushare/api/v1.0/search', methods = ['GET','POST'])
 def search():
     """Renders a search page (as templated from https://codepen.io/adobewordpress/pen/gbewLV)"""
-    #return app.send_static_file('Forms/SearchPage.html')
     return render_template('googlesearch.html')
 
+### Local Search
 @app.route('/edushare/api/v1.0/search/<search>', methods = ['GET'])
 def get_items(search):
     try:
-        item = get_items_with(search)
-        return jsonify(item)
+        # item = get_items_with(search)
+        search_ul = 'http://0.0.0.0:8000/search'
+        s = requests.post(search_ul, json = {'search':search})
+        print(s)
+        return s.json()
     except TypeError:
         abort(400)
 
+### Get Resource Route
+@app.route('/edushare/api/v1.0/download/<file_name>', methods = ['GET'])
+def get_file(file_name):
+    try:
+        download_url = 'http://0.0.0.0:8000/download'
+        d = requests.post(download_url, json = {'key':file_name})
+        print(d)
+        return d
+    except TypeError:
+        abort(400)
+
+### Google API Search Routes
 @app.route('/edushare/api/v1.0/apisearch/<search>', methods = ['GET'])
 def get_items_api(search):
     try:
@@ -64,6 +82,8 @@ def get_previous():
     except TypeError:
         abort(400)
 
+###
+# Login Routes
 @app.route('/edushare/api/v1.0/<username>/<password>', methods = ['GET','POST'])
 def login(username, password):
     try:
@@ -79,6 +99,7 @@ def login(username, password):
     except TypeError:
         abort(400)
 
+###Login With JSON Request
 @app.route('/edushare/api/v1.0/login', methods = ['GET','POST'])
 def login_():
     if not request.json:
@@ -98,28 +119,33 @@ def login_():
     except TypeError:
         abort(400)
 
+###
+# Register Routes
 @app.route('/edushare/api/v1.0/register/<username>/<password>/<email>/<role>/<review>/<name>', methods=['GET', 'POST'])
 def register(username, password, email, role, review, name):
     try:
         register_url = 'http://0.0.0.0:8000/register' # + username + '/' + password + '/' + email + '/' + role + '/' + review
-        s = requests.post(register_url, json = {'username':username,'password':password,'email':email,'role':role,'review':review,'name':name})
-        print(s)
-        return s.json()
+        r = requests.post(register_url, json = {'username':username,'password':password,'email':email,'role':role,'review':review,'name':name})
+        print(r)
+        return r.json()
     except TypeError:
         abort(400)
 
+### Register with JSON Request
 @app.route('/edushare/api/v1.0/register', methods=['GET', 'POST'])
 def register_():
     if not request.json:
         abort(400)
     try:
         register_url = 'http://0.0.0.0:8000/register'
-        s = requests.post(register_url, json = request.json)
-        print(s)
-        return s.json()
+        r = requests.post(register_url, json = request.json)
+        print(r)
+        return r.json()
     except TypeError:
         abort(400)
 
+### 
+# Helper Functions
 def get_items_with(string):
     item = [item for item in items if string in item['tags']]
     if len(item) == 0:
@@ -144,7 +170,8 @@ def get_previous_ten(query_data):
         search_results = requests.get(_url_template)     
         return search_results.json()
 
-#Error Handlers
+###
+# Error Handlers
 
 @app.errorhandler(404)
 def not_found(error):
@@ -154,6 +181,8 @@ def not_found(error):
 def invalid_upload(error):
     return make_response(jsonify({'error': 'Invalid Submission'}), 400)
 
+###
+# Running App
 if __name__ == '__main__':
     import os
     HOST = os.environ.get('SERVER_HOST', '0.0.0.0')
