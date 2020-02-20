@@ -60,6 +60,23 @@ def download():
     # except (MySQLdb.Error, MySQLdb.Warning, KeyError) as e:
     #     return jsonify({'error':str(e),'type': type(e).__name__})
 
+@app.route('/jsondownload', methods=['POST'])
+def jsondownload():
+    if not request.json:
+        abort(400)
+    try:
+        key = request.json['key']
+        s3_resource = boto3.resource('s3')
+        my_bucket=s3_resource.Bucket(S3_BUCKET)
+        file_obj = my_bucket.Object(key).get()
+        return Response(
+        file_obj['Body'].read(),
+        mimetype='text/plain',
+        headers={"Content-Disposition":"attachment;filename={}".format(key)}
+    )
+    except (MySQLdb.Error, MySQLdb.Warning, KeyError) as e:
+        return jsonify({'error':str(e),'type': type(e).__name__})
+
 @app.route('/documentsearch',methods=['GET','POST'])
 def document_search():
     if not request.json:
