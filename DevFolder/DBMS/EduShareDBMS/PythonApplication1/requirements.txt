@@ -1,3 +1,5 @@
 flask
 flask-mysqldb
 requests
+flask_bootstrap
+boto3
