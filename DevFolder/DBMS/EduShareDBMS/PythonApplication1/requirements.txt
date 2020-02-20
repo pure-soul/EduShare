@@ -3,3 +3,4 @@ flask-mysqldb
 requests
 flask_bootstrap
 boto3
+awscli

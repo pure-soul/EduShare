@@ -7,7 +7,12 @@ from urllib.parse import unquote
 import pdb
 from flask_bootstrap import Bootstrap
 import boto3
+
 from config import S3_BUCKET, S3_KEY, S3_SECRET
+
+# S3_BUCKET = "edushare-filestorage"
+# S3_KEY = "AKIAQULRDITENFHW26OP"
+# S3_SECRET = "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"
 
 s3=boto3.client('s3',aws_access_key_id=S3_KEY, aws_secret_access_key=S3_SECRET)
 app = Flask(__name__)
