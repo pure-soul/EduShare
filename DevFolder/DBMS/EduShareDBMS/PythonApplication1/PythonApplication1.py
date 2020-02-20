@@ -8,13 +8,15 @@ import pdb
 from flask_bootstrap import Bootstrap
 import boto3
 
-from config import S3_BUCKET, S3_KEY, S3_SECRET
+#from config import S3_BUCKET, S3_KEY, S3_SECRET
 
 # S3_BUCKET = "edushare-filestorage"
-# S3_KEY = "AKIAQULRDITENFHW26OP"
-# S3_SECRET = "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"
+# S3_KEY = ""
+# S3_SECRET = ""
 
-s3=boto3.client('s3',aws_access_key_id=S3_KEY, aws_secret_access_key=S3_SECRET)
+#s3=boto3.client('s3',aws_access_key_id=S3_KEY, aws_secret_access_key=S3_SECRET)
+s3=boto3.client('s3')
+S3_BUCKET="edushare-filestorage"
 app = Flask(__name__)
 
 app.config['MYSQL_HOST'] = "bm8hz3h5flr23o71hqco-mysql.services.clever-cloud.com"
@@ -23,7 +25,6 @@ app.config['MYSQL_PASSWORD'] = "bQDFy45cP2SlZItMHxqU"
 app.config['MYSQL_DB'] = "bm8hz3h5flr23o71hqco"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
-app.config['DEBUG'] = True
 
 Bootstrap(app)
 mysql = MySQL(app)
