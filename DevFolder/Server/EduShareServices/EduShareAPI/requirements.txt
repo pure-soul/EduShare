@@ -1,3 +1,4 @@
 flask
-pycrypto
 requests
+pycrypto
+gunicorn
