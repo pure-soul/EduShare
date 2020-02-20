@@ -44,7 +44,7 @@ def get_items(search):
 @app.route('/edushare/api/v1.0/download/<file_name>', methods = ['GET'])
 def get_file(file_name):
     try:
-        download_url = 'http://0.0.0.0:8000/download'
+        download_url = 'http://0.0.0.0:8000/jsondownload'
         d = requests.post(download_url, json = {'key':file_name})
         print(d)
         return d
