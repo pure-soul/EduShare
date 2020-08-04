@@ -1,0 +1,181 @@
+<!DOCTYPE html> 
+ <html lang="en"> 
+    <head> 
+        <title>Upload to EduShare</title> 
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+        <!-- Bootstrap --> 
+        <link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"> 
+    </head> 
+    <body>
+        {% block navbar %}
+        <div class="navbar navbar-fixed-top">
+            <!-- ... -->
+        </div>
+        {% endblock %}
+        {% block content %}
+        <div class="container">
+            <div class="row">
+                <div class="col-12-xs">
+                    <h3>Upload To Edushare</h3>
+                    <hr>
+                    <form name="UploadForm" class="upload-form" action="/v2.1/users/submit_form/" method="POST" enctype="multipart/form-data" style="widows: 500px;" onsubmit="return Validate_Form();">
+                        <div class="form-group">
+                            <label for="authors">Title:</label>
+                            <input type="text" name="title" id="title" class="form-control" placeholder="Enter Title of File To Be Uploaded">
+                        </div>
+                        <div class="form-group">
+                            <label for="authors">Authors:</label>
+                            <input type="text" name="authors" id="authors" class="form-control" placeholder="Enter Authors (separated by commas)">
+                        </div>
+                        <div class="form-group">
+                            <label for="publishers">Publishers:</label>
+                            <input type="text" name="publishers" id="publishers" class="form-control" placeholder="Enter Publishers (separated by commas)">
+                        </div>
+                        <div class="form-group">
+                            <label for="datePublished">Date Published:</label>
+                            <input type="date" name="datePublished" id="datePublished" class="form-control"> 
+                        </div>
+                        <div class="form-group">
+                            <label for="tags">Tags:</label>
+                            <input type="text" name="tags" id="tags" class="form-control" placeholder="Enter tags (separated by commas)"> 
+                        </div>
+                        <div class="form-group"></div>
+                            <p><input type="file" name="file" id="file_input"></p>
+                        </div>
+                        <div class="form-group"></div>
+                            <p style="text-align:center"><button type="submit" name="submit" class="btn btn-primary">Upload</button></p>
+                        </div>
+                    </form>
+                    <!-- <p><input type="file" name="file" id="file"></p> -->
+                    <script type="text/javascript">
+                        /*
+                          Function to validate form data before submission to server.
+                        */
+                        function Validate_Form() { 
+                            errfound = false;
+                            var title = document.forms["UploadForm"]["title"];               
+                            var authors = document.forms["UploadForm"]["authors"];    
+                            var publishers = document.forms["UploadForm"]["publishers"];  
+                            var datePublished =  document.forms["UploadForm"]["datePublished"];  
+                            var tags = document.forms["UploadForm"]["tags"];  
+                            var file = document.forms["UploadForm"]["file"];  
+                            
+                            if (title.value == ''){
+                                window.alert("Please enter a title."); 
+                                title.focus(); 
+                                return errfound; 
+                            }
+                            if (authors.value == ''){
+                                window.alert("Please enter author/s."); 
+                                authors.focus(); 
+                                return errfound; 
+                            }
+                            if (publishers.value == ''){
+                                window.alert("Please enter publisher/s."); 
+                                publishers.focus(); 
+                                return errfound; 
+                            }
+                            if (tags.value == ''){
+                                window.alert("Please enter tag/s."); 
+                                tags.focus(); 
+                                return errfound; 
+                            }
+                            if (datePublished.value == ''){
+                                window.alert("Please enter Date Published."); 
+                                datePublished.focus(); 
+                                return errfound; 
+                            }
+                            if (file.value == ''){
+                                window.alert("Must select a file to upload."); 
+                                file.focus(); 
+                                return errfound; 
+                            }
+							return !errfound; /* true if there are no errors */ 
+                            }
+                            
+                        /*
+                          Function to carry out the actual POST request to S3 using the signed request from the Python app.
+                        */
+                        function uploadFile(file, s3Data, url){
+                            const xhr = new XMLHttpRequest();
+                            xhr.open('POST', s3Data.url);
+                            xhr.setRequestHeader('x-amz-acl', 'public-read');
+                        
+                            const postData = new FormData();
+                            for(key in s3Data.fields){
+                                postData.append(key, s3Data.fields[key]);
+                            }
+                            postData.append('file', file);
+                        
+                            xhr.onreadystatechange = () => {
+                                if(xhr.readyState === 4){
+                                if(xhr.status === 200 || xhr.status === 204){
+                                    document.getElementById('preview').src = url;
+                                    document.getElementById('avatar-url').value = url;
+                                }
+                                else{
+                                    alert('Could not upload file.');
+                                }
+                                }
+                            };
+                            xhr.send(postData);
+                        }
+                    
+                        /*
+                          Function to get the temporary signed request from the Python app.
+                          If request successful, continue to upload the file using this signed
+                          request.
+                        */
+                        function getSignedRequest(file){
+                            const xhr = new XMLHttpRequest();
+                            xhr.open('GET', `/v2.1/users/sign-s3?file_name=${file.name}&file_type=${file.type}`);
+                            xhr.onreadystatechange = () => {
+                            if(xhr.readyState === 4){
+                                if(xhr.status === 200){
+                                    const response = JSON.parse(xhr.responseText);
+                                    uploadFile(file, response.data, response.url);
+                                }
+                                else{
+                                    alert('Could not get signed URL.');
+                                }
+                            }
+                          };
+                          xhr.send();
+                        }
+
+                        /*
+                           Function called when file input updated. If there is a file selected, then
+                           start upload procedure by asking for a signed request from the app.
+                        */
+                        function initUpload(){
+                            const files = document.getElementById('file_input').files;
+                            // const files = document.forms["UploadForm"]["file"].file;
+                            console.log(files);
+                            const file = files[0];
+                            // const file = document.forms["UploadForm"]["file"].file;
+                            console.log(file);
+                            if(!file){
+                                console.log('No file selected.');
+                                // return alert('No file selected.');
+                                return;
+                            }
+                            getSignedRequest(file);
+                        }
+
+                        /*
+                           Bind listeners when the page loads.
+                        */
+                        (() => {
+                            document.getElementById('file_input').onchange = initUpload();
+                            // document.forms["UploadForm"]["file"].onchange = initUpload();
+                        })();
+                        </script>
+                    <hr>
+                    <p style="text-align:center">{{ process }}</p>
+                </div>
+            </div>
+            {% endblock %}
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> 
+        <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script> 
+    </body> 
+</html>

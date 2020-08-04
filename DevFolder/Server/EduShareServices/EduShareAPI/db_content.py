@@ -1,1 +1,0 @@
-#template for content exist in content.py, but can be adjusted 

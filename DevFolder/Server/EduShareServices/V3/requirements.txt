@@ -1,0 +1,8 @@
+django
+gunicorn
+requests
+pycrypto
+mysqlclient
+boto3
+django-storages
+python-socketio

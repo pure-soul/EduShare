@@ -1,0 +1,55 @@
+<!DOCTYPE html> 
+ <html lang="en"> 
+    <head> 
+        <title>Upload to EduShare</title> 
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+        <!-- Bootstrap --> 
+        <link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"> 
+        <script type="text/javascript" src="http://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=L7KKT6joRgOG5aNDcsIfBl7k14afx3x2VMesXPs9nZh-65G_Ok5W1wz6Z_uTbUh_" charset="UTF-8"></script>
+    </head> 
+    <body>
+        {% block navbar %}
+        <div class="navbar navbar-fixed-top">
+            <!-- ... -->
+        </div>
+        {% endblock %}
+
+        {% block content %}
+        <div class="container">
+            <div class="row">
+                <div class="col-12-xs">
+                    <h3>Upload To Edushare</h3>
+                    <hr>
+                    <form class="upload-form" action="/v2.1/users/upload" method="POST" enctype="multipart/form-data" style="widows: 500px;">
+                        <div class="form-group">
+                            <label for="authors">Title:</label>
+                            <input type="text" name="title" id="title" class="form-control" placeholder="Enter Title of File To Be Uploaded">
+                        </div>
+                        <div class="form-group">
+                            <label for="authors">Authors:</label>
+                            <input type="text" name="authors" id="authors" class="form-control" placeholder="Enter Authors (separated by commas)">
+                        </div>
+                        <div class="form-group">
+                            <label for="publishers">Publishers:</label>
+                            <input type="text" name="publishers" id="publishers" class="form-control" placeholder="Enter Publishers (separated by commas)">
+                        </div>
+                        <div class="form-group">
+                            <label for="datePublished">Date Published:</label>
+                            <input type="date" name="datePublished" id="datePublished" class="form-control"> 
+                        </div>
+                        <div class="form-group">
+                            <label for="tags">Tags:</label>
+                            <input type="text" name="tags" id="tags" class="form-control" placeholder="Enter tags (separated by commas)"> 
+                        </div>
+                        <p><input type="file" name="file"></p>
+                        <button type="submit" name="submit" class="btn btn-primary">Upload</button>
+                    </form>
+                    <hr>
+                    <p>{{ process }}</p>
+                </div>
+            </div>
+            {% endblock %}
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> 
+        <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script> 
+    </body> 
+</html>
